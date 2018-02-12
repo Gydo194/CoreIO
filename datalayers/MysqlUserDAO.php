@@ -1,17 +1,11 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of MysqlUserDAO
- *
- * @author gydo194
+ * @author Gydo194
+ * 
+ * MySQL User DAO class
  */
-
+//no personal passwords in here today
 defined("MYSQL_USER") || define("MYSQL_USER","hibernate");
 defined("MYSQL_PASS") || define("MYSQL_PASS","hibernate");
 defined("MYSQL_HOST") || define("MYSQL_HOST","127.0.0.1");
@@ -69,7 +63,7 @@ class MysqlUserDAO implements IDAOUser {
 
     public function getUserByUsernameAndPassword(string $user, string $pass) {
         //$stmt = PDOFactory::query("SELECT * FROM users WHERE name = ? and pass = ? LIMIT 1;", array($user,$pass));
-        $stmt = PDOFactory::query("SELECT name,password,token,permissions FROM users where name = ? and password = ?;",array($user,$pass));
+        $stmt = PDOFactory::query("SELECT name,password,token,permissions FROM users where name = ? and password = sha1(?);",array($user,$pass));
         $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
         //echo "<br>userdumpmysql<br>";
         //var_dump($userdata);

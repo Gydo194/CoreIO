@@ -48,7 +48,7 @@ class MainPage implements Action {
                 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-                -->
+               
                 <style>
                     /*rgbled sliders - red*/
                     input[type=range].rgbled-slider-red {
@@ -316,7 +316,7 @@ class MainPage implements Action {
 
 
                 </style>
-
+                -->
             </head>
             <body>
 
@@ -332,23 +332,26 @@ class MainPage implements Action {
                             <li class="nav-item active">
                                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Tools
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="?p=usercheck">User Check</a>
+                                    <a class="dropdown-item" href="?p=test">Test Page (debug dump)</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="?p=admin">Admin Page</a>
                                 </div>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="?p=logout">Logout</a>
+                            </li>
+                            <!--
+                            <li class="nav-item">
                                 <a class="nav-link disabled" href="#">Disabled</a>
                             </li>
+                            -->
                         </ul>
                         <!--
                         <form class="form-inline my-2 my-lg-0">
@@ -374,193 +377,15 @@ class MainPage implements Action {
                     <div class="container-fluid">
 
 
-                        <!-- modal defenition -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Customize</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="container">
-                                            <!-- red slider -->
-                                            <div class="row justify-content-center">
-
-
-                                                <input type="range" id="rgbled-input-red" class="rgbled-slider-red" min="0" max="255" value="0" >
-
-                                            </div>
-
-                                            <!-- green slider -->
-                                            <div class="row justify-content-center">
-
-                                                <input type="range" id="rgbled-input-green" class="rgbled-slider-green" min="0" max="255" value="0" >
-
-
-                                            </div>
-
-                                            <!-- blue slider -->
-                                            <div class="row justify-content-center">
-
-                                                <input type="range" id="rgbled-input-blue" class="rgbled-slider-blue" min="0" max="255" value="0" >
-
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary" onclick="alert('applied null');">Apply</button> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end modal -->
-
-
-
-                        <!-- send modal defenition -->
-                        <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Send to GAMP server</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-
-
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-sm">Server URL</span>
-                                            </div>
-                                            <input id="input-gamp-url" type="text" placeholder="Optional" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-sm">Channel</span>
-                                            </div>
-                                            <input id="input-gamp-channel" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-
-                                        <div class="input-group input-group-sm mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-sm">Message</span>
-                                            </div>
-                                            <input id="input-gamp-message" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                                        </div>
-
-                                        <button id="input-gamp-send" type="button" class="btn btn-primary">Send</button>
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary" onclick="alert('applied null');">Apply</button> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end send modal -->
-
 
                         <div class="row">
 
-                            <div class="col-lg-4 col-md-6 col-sm-12 ">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Server command
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Send a message</h5>
-                                        <p class="card-text">Send a GAMP server command</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#sendModal">Send message &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Featured
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Go somewhere &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Featured
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Go somewhere &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!--  </div> -->
-
-                            <!-- start row 2 -->
-
-                            <!--  <div class="row"> -->
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Featured
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Go somewhere &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Featured
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Go somewhere &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Featured
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Go somewhere &#5125;</a>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invokeAction("rgbled"); ?>
 
 
                         </div>
@@ -578,126 +403,7 @@ class MainPage implements Action {
 
 
 
-                <script>
-                    function gampsend(channel, message) {
-                        var gcmd = "bsend(CHANNEL,MESSAGE);";
-                        var bmsg = btoa(message);
 
-                        console.log("gampsend: message:" + bmsg);
-
-                        var msga = gcmd.replace("CHANNEL", channel);
-                        var msg = msga.replace("MESSAGE", bmsg);
-
-                        var x = new XMLHttpRequest();
-                        x.open("POST", "", true);
-                        x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        /*
-                         x.onreadystatechange = function() {
-                         if(this.readyState == 4) {
-                         //console.log("Request completed. Response:"+this.response);
-                         return true;
-                         }
-                         else {
-                         //console.log("request busy.. readyState == "+this.readyState);
-                         }
-                         }
-                         */
-
-                        x.onload = function () {
-                            console.log("response='" + this.response + "'");
-                            if (this.readyState == 4) {
-                                // console.log("OK");
-
-                                var json = JSON.parse(this.responseText);
-                                if (json["success"] == true) {
-                                    console.log("GAMP command succeeded");
-                                } else {
-                                    console.log("GAMP command failed (success=false)");
-
-                                }
-
-
-                            } else {
-                                return false;
-                            }
-                        }
-
-                        x.send("p=send&msg=" + msg);
-
-
-                    }
-                </script>
-                <script>
-
-                    $("#input-gamp-send").on("click", function () {
-                        console.log("run");
-                        var url = $("#input-gamp-url").val();
-                        var channel = $("#input-gamp-channel").val();
-                        var message = $("#input-gamp-message").val();
-                        console.log("URL:" + url);
-                        console.log("channel:" + channel);
-                        console.log("message:" + message);
-
-                        //var requrl = url + "?a="
-
-                        // var msg = "bsend("+channel+","+btoa(message)+");";
-
-                        //console.log("Base64:"+msg);
-
-
-                        var xhr = new XMLHttpRequest();
-
-                        xhr.onload = function (e) {
-                            console.log("request completed, response:" + e.responseText);
-                        }
-
-                        xhr.open("POST", url, true);
-                        //xhr.open("POST",url);
-
-                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded") //required
-
-                        var b64 = "bsend(" + channel + "," + btoa(message) + ");";
-
-                        var req = "a=send&msg=" + b64;
-
-                        console.log("POST load:" + req);
-
-
-                        xhr.send(req);
-
-
-
-
-                    });
-                </script>
-
-
-                <script>
-                    //RGB range slider jQuery events
-                    const RGBLED_DEVICE_CHANNEL = "1";
-                    const RGBLED_RED_PIN = "9";
-                    const RGBLED_GREEN_PIN = "6";
-                    const RGBLED_BLUE_PIN = "5";
-
-
-
-                    $("#rgbled-input-red").on("change", function () { //was on change mousemove
-                        console.log("rgbled: Red:" + $(this).val());
-                        gampsend(RGBLED_DEVICE_CHANNEL, "aw(" + RGBLED_RED_PIN + "," + $(this).val() + ");");
-                        //alert($(this).val());
-                    });
-
-                    $("#rgbled-input-green").on("change", function () { //was on change mousemove
-                        console.log("rgbled: Green:" + $(this).val());
-                        gampsend(RGBLED_DEVICE_CHANNEL, "aw(" + RGBLED_GREEN_PIN + "," + $(this).val() + ");");
-                    });
-
-                    $("#rgbled-input-blue").on("change", function () { //was on change mousemove
-                        console.log("rgbled: Blue:" + $(this).val());
-                        gampsend(RGBLED_DEVICE_CHANNEL, "aw(" + RGBLED_BLUE_PIN + "," + $(this).val() + ");");
-                    });
-
-                </script>
 
 
             </body>

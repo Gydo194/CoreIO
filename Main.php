@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * CoreIO main
+ */
 
 require_once './utils/interfaces/Base64Serializeable.php';
 require_once 'models/interfaces/IUser.php';
@@ -13,10 +16,10 @@ require_once './controllers/SessionController.php';
 require_once './controllers/UserController.php';
 
 
-require_once './web/ViewFramework/PageRenderException.php';
-require_once './web/ViewFramework/AccessViolationException.php';
-require_once './web/ViewFramework/Action.php';
-require_once './web/ViewFramework/ViewFramework.php';
+require_once './web/ActionFramework/PageRenderException.php';
+require_once './web/ActionFramework/AccessViolationException.php';
+require_once './web/ActionFramework/Action.php';
+require_once './web/ActionFramework/ActionFramework.php';
 
 
 require_once './web/pages/TestPage.php';
@@ -32,118 +35,9 @@ require_once './web/pages/LogoutPage.php';
 require_once './web/actions/TCPSendAction.php';
 require_once './web/actions/UserCheckAction.php';
 
+//applets
+require_once './web/applets/RgbledApplet.php';
 
-
-
-
-
-/*
-$u = new User("user", "pass", "token", array("main"));
-
-var_dump($u);
-
-
-*/
-/*
-$u = new TestUserDAO();
-
-$user = null;
-$user = $u->getUserByUsernameAndPassword("user", $_GET["p"]);
-
-
-
-if($user == null) { die("no login"); }
-
-var_dump($user);
-
-echo "<br>";
-echo $user->getUserName();
-echo "<br>";
-echo $user->getPassword();
-echo "<br>";
-echo $user->getToken();
-echo "<br>";
-
-echo $user->getPermission("admin") ? "true" : "false";
-
-echo "<br>";
-
-echo $user->serialize();
-
-echo "<br>";
-
-$u2 = new User();
-$u2->unserialize("eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3MiLCJ0b2tlbiI6InVzZXIwX3Rva2VuIiwicGVybWlzc2lvbnMiOnsibWFpbiI6dHJ1ZSwiYWRtaW4iOnRydWUsImRlYnVnIjp0cnVlLCJoYWxsbyI6ZmFsc2V9fQ==");
-
-echo "User deserialize dump<br>";
-
-var_dump($u2);
-
-
-echo "<br>";
-echo "<br>";
-*/
-
-/*
-define("SESSION_USER_VAR_NAME","user");
-define("LOGIN_USERNAME_PARAM_NAME","user");
-define("LOGIN_PASSWORD_PARAM_NAME","pass");
-
-echo "UserController login unit test<br>";
-
-UserController::login();
-
-
-echo "UserController unit test done<br>";
-
-var_dump(UserController::getUser());
-
-*/
-
-
-
-/*
-echo SessionController::getValue("test");
-
-SessionController::setValue("test", $_REQUEST["set"]);
-
-*/
-
-//echo '"'.UserController::getRequestParameter("test").'"'; //now private function
-
-////////////////////////////////////////////////////////
-/*
-if(!isset($_REQUEST["nosess"])) {
-    session_start();
-    
-}
-
-echo "UserController login unit test<br>";
-
-UserController::login();
-
-
-echo "UserController unit test done<br>";
-
-var_dump(UserController::getUser());
-
-
-
-echo "View Framework unit test<br>";
-
-
-$tp = new TestPage();
-
-ViewFramework::addPage("test", $tp);
-
-
-ViewFramework::render("test");
-/////////////////////////////////////////////////////////////
-
-
-//var_dump((new TestUserDAO)->getUserByToken($_REQUEST["token"]));
- * 
- */
 
 
 //define constants
@@ -169,17 +63,21 @@ $logout = new LogoutPage();
 //actions
 $snd = new TCPSendAction();
 $uchck = new UserCheckAction();
+//applets
+$rgbled = new RgbledApplet();
 
 //add pages
-ViewFramework::addPage("test", $tp);
-ViewFramework::addPage("404", $nf);
-ViewFramework::addPage("main", $mp);
-ViewFramework::addPage("unauth", $uauth);
-ViewFramework::addPage("admin", $admin);
-ViewFramework::addPage("login", $login);
-ViewFramework::addPage("logout", $logout);
-ViewFramework::addPage("send", $snd);
-ViewFramework::addPage("usercheck", $uchck);
+ActionFramework::addPage("test", $tp);
+ActionFramework::addPage("404", $nf);
+ActionFramework::addPage("main", $mp);
+ActionFramework::addPage("unauth", $uauth);
+ActionFramework::addPage("admin", $admin);
+ActionFramework::addPage("login", $login);
+ActionFramework::addPage("logout", $logout);
+ActionFramework::addPage("send", $snd);
+ActionFramework::addPage("usercheck", $uchck);
+ActionFramework::addPage("rgbled", $rgbled);
+
 
 
 //get the page/action
@@ -192,5 +90,5 @@ if(isset($_REQUEST[VIEW_PAGE_PARAM_NAME])) {
 UserController::login();
 
 //render the page
-ViewFramework::renderPage($page); //the page render functions decide whether or not the user is authorised to see the page
+ActionFramework::invokeAction($page); //the page render functions decide whether or not the user is authorised to see the page
 

@@ -17,7 +17,7 @@ defined("VIEW_UNAUTH_PAGE_NAME") || define("VIEW_UNAUTH_PAGE_NAME","unauth");
 defined("VIEW_LOGIN_PAGE_NAME") || define("VIEW_LOGIN_PAGE_NAME","login");
 
 
-class ViewFramework {
+class ActionFramework {
 
     //put your code here
     private static $pages = array();
@@ -64,7 +64,7 @@ class ViewFramework {
     
     
 
-    public static function renderPage(string $page) {
+    public static function invokeAction(string $page) {
         if(self::hasPage($page)) {
             //self::getPage($page)->invoke();
             self::render($page);

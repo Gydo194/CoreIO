@@ -206,32 +206,32 @@ class LoginPage implements Action {
 
             <script>
 
-            function handleLoginSuccess() {
-                //alert("login succeeded");
-                document.location.reload();
-            }
-            
-            function handleLoginFailure() {
-                alert("login failed");
-            }
-            
-            function handleError() {
-                alert("login error");
-            }
-            
-            
-            function login(checkOnly = false) {
-                      var x = new XMLHttpRequest();
-                      
-                      var url = "?p=usercheck";
-                      if(checkOnly) {
-                          url += "&nosess";
-                      }
-                      console.log("login(): url:"+url);
-                      
-                      
+                function handleLoginSuccess() {
+                    //alert("login succeeded");
+                    document.location.reload();
+                }
+
+                function handleLoginFailure() {
+                    alert("login failed");
+                }
+
+                function handleError() {
+                    alert("login error");
+                }
+
+
+                function login(checkOnly = false) {
+                    var x = new XMLHttpRequest();
+
+                    var url = "?p=usercheck";
+                    if (checkOnly) {
+                        url += "&nosess";
+                    }
+                    console.log("login(): url:" + url);
+
+
                     x.open("POST", url);
-//                    x.open("POST", "?p=test");
+        //                    x.open("POST", "?p=test");
                     x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                     x.onload = function () {
                         console.log("response:'" + this.responseText + "'end response");
@@ -244,8 +244,8 @@ class LoginPage implements Action {
                                 handleError();
                             }
                             console.log("Login attempt:" + json["success"]);
-                            
-                            if(json["success"]) {
+
+                            if (json["success"]) {
                                 handleLoginSuccess();
                             } else {
                                 handleLoginFailure();
@@ -259,14 +259,21 @@ class LoginPage implements Action {
                     var params = "user=" + user + "&pass=" + pass;
                     console.log("parameters:" + params);
                     x.send(params);
-            }
+                }
 
 
 
                 $("#loginsubmit").on("click", function () {
-              login();
+                    login();
 
                 });
+
+                $("#loginpass").keyup(function (e) {
+                    if (e.keyCode == 13) { //on enter press
+                        login();
+                    }
+                })
+
             </script>
 
         </html>
