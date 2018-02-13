@@ -291,7 +291,7 @@ class RgbledApplet implements Action {
 
 
         <script>
-            function gampsend(channel, message) {
+            function gampsend(channel, message, onsuccess, onerror) {
                 var gcmd = "bsend(CHANNEL,MESSAGE);";
                 var bmsg = btoa(message);
 
@@ -327,12 +327,14 @@ class RgbledApplet implements Action {
                             console.log("GAMP command failed (success=false)");
 
                         }
-
+                        onsuccess(this);
 
                     } else {
                         return false;
                     }
                 }
+                
+                x.onerror = onerror;
 
                 x.send("p=send&msg=" + msg);
 
@@ -384,6 +386,7 @@ class RgbledApplet implements Action {
 
                     </div>
                     <div class="modal-footer">
+                        <p class="modal-footer" id="rgbled_<?php echo $rgbled_id; ?>_status_text">test</p>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <!-- <button type="button" class="btn btn-primary" onclick="alert('applied null');">Apply</button> -->
                     </div>
@@ -421,6 +424,13 @@ class RgbledApplet implements Action {
             const RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN = "6";
             const RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN = "5";
 
+            function success() {
+                
+            }
+            
+            function failure() {
+                
+            }
 
 
             $("#rgbled-input-red<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
