@@ -295,7 +295,7 @@ class RgbledApplet implements Action {
                 var gcmd = "bsend(CHANNEL,MESSAGE);";
                 var bmsg = btoa(message);
 
-                console.log("gampsend: message:" + bmsg);
+               // console.log("gampsend: message:" + bmsg);
 
                 var msga = gcmd.replace("CHANNEL", channel);
                 var msg = msga.replace("MESSAGE", bmsg);
@@ -316,24 +316,25 @@ class RgbledApplet implements Action {
                  */
 
                 x.onload = function () {
-                    console.log("response='" + this.response + "'");
+                    //console.log("response='" + this.response + "'");
                     if (this.readyState == 4) {
                         // console.log("OK");
 
                         var json = JSON.parse(this.responseText);
                         if (json["success"] == true) {
                             console.log("GAMP command succeeded");
+                             onsuccess(this);
                         } else {
                             console.log("GAMP command failed (success=false)");
-
+                            onerror(this);
                         }
-                        onsuccess(this);
+                       
 
                     } else {
                         return false;
                     }
                 }
-                
+
                 x.onerror = onerror;
 
                 x.send("p=send&msg=" + msg);
@@ -386,7 +387,7 @@ class RgbledApplet implements Action {
 
                     </div>
                     <div class="modal-footer">
-                        <p class="modal-footer" id="rgbled_<?php echo $rgbled_id; ?>_status_text">test</p>
+                        <span id="rgbled_<?php echo $rgbled_id; ?>_status_text"></span>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <!-- <button type="button" class="btn btn-primary" onclick="alert('applied null');">Apply</button> -->
                     </div>
@@ -424,29 +425,39 @@ class RgbledApplet implements Action {
             const RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN = "6";
             const RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN = "5";
 
-            function success() {
-                
+            function rgbled_<?php echo $rgbled_id; ?>_reset() {
+                console.log("RGBLED_RESET");
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("");
+
             }
-            
-            function failure() {
-                
+
+            function rgbled_<?php echo $rgbled_id; ?>_success() {
+                console.log("RGBLED_SUCCESS");
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"green\">Success</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset,2000);
+            }
+
+            function rgbled_<?php echo $rgbled_id; ?>_failure() {
+                console.log("RGBLED_FAILURE");
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"red\">Failed</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset,2000);
             }
 
 
             $("#rgbled-input-red<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
                 console.log("rgbled: Red:" + $(this).val());
-                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_RED_PIN + "," + $(this).val() + ");");
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_RED_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
                 //alert($(this).val());
             });
 
             $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
                 console.log("rgbled: Green:" + $(this).val());
-                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN + "," + $(this).val() + ");");
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
             });
 
             $("#rgbled-input-blue<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
                 console.log("rgbled: Blue:" + $(this).val());
-                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN + "," + $(this).val() + ");");
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
             });
 
         </script>
