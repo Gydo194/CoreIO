@@ -11,11 +11,14 @@
  *
  * @author gydo194
  */
+
+defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
+
 class AdminPage implements Action {
     //put your code here
     public function invoke() {
         
-        if(!UserController::getPermission("admin")) {
+        if(!UserController::getPermission(ADMIN_PAGE_PERMISSION_NAME)) {
             throw new AccessViolationException();
         }
         echo "admin page success";
