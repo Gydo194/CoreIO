@@ -4,7 +4,7 @@
  * CoreIO main
  */
 
-require_once './utils/interfaces/Base64Serializeable.php';
+require_once 'interfaces/Base64Serializeable.php';
 require_once 'models/interfaces/IUser.php';
 require_once 'models/User.php';
 require_once './datalayerinterfaces/IDAOUser.php';
