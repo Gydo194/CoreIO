@@ -22,13 +22,13 @@ require_once './web/ActionFramework/Action.php';
 require_once './web/ActionFramework/ActionFramework.php';
 
 
-require_once './web/pages/TestPage.php';
-require_once './web/pages/NotFoundPage.php';
-require_once './web/pages/MainPage.php';
-require_once './web/pages/UnauthorisedPage.php';
-require_once './web/pages/AdminPage.php';
-require_once './web/pages/LoginPage.php';
-require_once './web/pages/LogoutPage.php';
+require_once './web/views/TestPage.php';
+require_once './web/views/NotFoundPage.php';
+require_once './web/views/MainPage.php';
+require_once './web/views/UnauthorisedPage.php';
+require_once './web/views/AdminPage.php';
+require_once './web/views/LoginPage.php';
+require_once './web/views/LogoutPage.php';
 
 
 //actions
