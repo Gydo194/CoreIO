@@ -15,7 +15,7 @@
 
 defined("TCP_SEND_PERMISSION_NAME") || define("TCP_SEND_PERMISSION_NAME","send");
 //defined("HOST") || define("HOST","127.0.0.1");
-defined("HOST") || define("HOST","192.168.177.120");
+defined("HOST") || define("HOST","core.io");
 defined("PORT") || define("PORT",3000);
 
 

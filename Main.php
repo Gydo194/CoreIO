@@ -45,6 +45,7 @@ defined("APP_NAME") || define("APP_NAME","CoreIO");
 defined("APP_VERSION") || define("APP_VERSION","7.2.1");
 defined("VIEW_PAGE_PARAM_NAME") || define("VIEW_PAGE_PARAM_NAME","p");
 
+defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
 
 //start session if necessary
 if(!isset($_REQUEST["nosess"])) {
@@ -91,4 +92,3 @@ UserController::login();
 
 //render the page
 ActionFramework::invokeAction($page); //the page render functions decide whether or not the user is authorised to see the page
-

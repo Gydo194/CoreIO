@@ -10,6 +10,9 @@
  *
  * @author gydo194
  */
+
+defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
+
 class MainPage implements Action {
 
     //put your code here
@@ -342,8 +345,14 @@ class MainPage implements Action {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="?p=usercheck">User Check</a>
                                     <a class="dropdown-item" href="?p=test">Test Page</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?p=admin">Admin Page</a>                                
+                                    <?php
+                                    if (UserController::getPermission(ADMIN_PAGE_PERMISSION_NAME)) {
+                                        ?>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="?p=admin">Admin Page</a> 
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -409,7 +418,7 @@ class MainPage implements Action {
                             var timer = null;
 
                             function checkSession() {
-                                console.log("check called");
+                                //console.log("check called");
                                 var x = new XMLHttpRequest();
                                 x.onload = function () {
                                     if (4 === this.readyState) {
@@ -421,7 +430,7 @@ class MainPage implements Action {
                                         }
                                         //check
                                         if (true === state) {
-                                            console.log("JSON state is true; all is fine");
+                                            //console.log("JSON state is true; all is fine");
                                             $("#onlineIndicator").html("<font color='green'>Connected</font>");
 
                                         } else {
@@ -451,10 +460,10 @@ class MainPage implements Action {
                             window.addEventListener("online", function (e) {
                                 console.log("window.ononline event fired");
                                 $("#onlineIndicator").html("<font color='green'>Online</font>");
-                                timer = setInterval(checkSession,3000);
+                                timer = setInterval(checkSession, 3000);
                             });
 
-                            timer = setInterval(checkSession,3000);
+                            timer = setInterval(checkSession, 3000);
 
 
 
