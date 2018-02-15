@@ -10,6 +10,9 @@
  *
  * @author gydo194
  */
+
+defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
+
 class MainPage implements Action {
 
     //put your code here
@@ -338,10 +341,18 @@ class MainPage implements Action {
                                     Tools
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="?p=usercheck">User Check</a>
-                                    <a class="dropdown-item" href="?p=test">Test Page (debug dump)</a>
+                                    <a class="dropdown-item disabled" href="#" id="onlineIndicator"><font color='green'>Online</font></a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?p=admin">Admin Page</a>
+                                    <a class="dropdown-item" href="?p=usercheck">User Check</a>
+                                    <a class="dropdown-item" href="?p=test">Test Page</a>
+                                    <?php
+                                    if (UserController::getPermission(ADMIN_PAGE_PERMISSION_NAME)) {
+                                        ?>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="?p=admin">Admin Page</a> 
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -402,7 +413,63 @@ class MainPage implements Action {
 
 
 
+                <script id="mainScript">
 
+                            var timer = null;
+
+                            function checkSession() {
+                                //console.log("check called");
+                                var x = new XMLHttpRequest();
+                                x.onload = function () {
+                                    if (4 === this.readyState) {
+                                        var state = false;
+                                        try {
+                                            state = JSON.parse(this.responseText)["success"];
+                                        } catch (err) {
+                                            $("#onlineIndicator").html("<font color='red'>Check Error [JSON]</font>");
+                                        }
+                                        //check
+                                        if (true === state) {
+                                            //console.log("JSON state is true; all is fine");
+                                            $("#onlineIndicator").html("<font color='green'>Connected</font>");
+
+                                        } else {
+                                            //check browser online
+                                            console.log("check: session expired.");
+                                            $("#onlineIndicator").html("<font color='red'>Session expired</font>");
+                                        }
+                                    }
+                                }
+                                x.onerror = function () {
+                                    $("#onlineIndicator").html("<font color='red'>Check Error</font>");
+                                }
+
+                                x.open("GET", "?p=usercheck");
+                                x.send();
+                            }
+
+
+                            window.addEventListener("offline", function (e) {
+                                console.log("window.onoffline event fired");
+                                $("#onlineIndicator").html("<font color='red'>Offline</font>");
+                                clearInterval(timer);
+
+                            });
+
+
+                            window.addEventListener("online", function (e) {
+                                console.log("window.ononline event fired");
+                                $("#onlineIndicator").html("<font color='green'>Online</font>");
+                                timer = setInterval(checkSession, 3000);
+                            });
+
+                            timer = setInterval(checkSession, 3000);
+
+
+
+
+
+                </script>
 
 
 
