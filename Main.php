@@ -4,39 +4,42 @@
  * CoreIO main
  */
 
-require_once './utils/interfaces/Base64Serializeable.php';
-require_once 'models/interfaces/IUser.php';
-require_once 'models/User.php';
-require_once './datalayerinterfaces/IDAOUser.php';
-require_once './datalayers/TestUserDAO.php';
-require_once './datalayers/MysqlUserDAO.php';
+//general utility
+require_once 'utils/PDOFactory.php';
+require_once 'utils/Base64Serializeable.php';
+
+require_once 'core/models/interfaces/IUser.php';
+require_once 'core/models/User.php';
+require_once 'core/datalayerinterfaces/IDAOUser.php';
+require_once 'core/datalayers/TestUserDAO.php';
+require_once 'core/datalayers/MysqlUserDAO.php';
 
 
-require_once './controllers/SessionController.php';
-require_once './controllers/UserController.php';
+require_once 'core/controllers/SessionController.php';
+require_once 'core/controllers/UserController.php';
 
 
-require_once './web/ActionFramework/PageRenderException.php';
-require_once './web/ActionFramework/AccessViolationException.php';
-require_once './web/ActionFramework/Action.php';
-require_once './web/ActionFramework/ActionFramework.php';
+require_once 'web/ActionFramework/PageRenderException.php';
+require_once 'web/ActionFramework/AccessViolationException.php';
+require_once 'web/ActionFramework/Action.php';
+require_once 'web/ActionFramework/ActionFramework.php';
 
 
-require_once './web/pages/TestPage.php';
-require_once './web/pages/NotFoundPage.php';
-require_once './web/pages/MainPage.php';
-require_once './web/pages/UnauthorisedPage.php';
-require_once './web/pages/AdminPage.php';
-require_once './web/pages/LoginPage.php';
-require_once './web/pages/LogoutPage.php';
+require_once 'web/views/TestPage.php';
+require_once 'web/views/NotFoundPage.php';
+require_once 'web/views/MainPage.php';
+require_once 'web/views/UnauthorisedPage.php';
+require_once 'web/views/AdminPage.php';
+require_once 'web/views/LoginPage.php';
+require_once 'web/views/LogoutPage.php';
 
 
-//actions
-require_once './web/actions/TCPSendAction.php';
-require_once './web/actions/UserCheckAction.php';
+//controllers (actions)
+require_once 'web/controllers/TCPSendAction.php';
+require_once 'web/controllers/UserCheckAction.php';
 
 //applets
-require_once './web/applets/RgbledApplet.php';
+require_once 'web/applets/RgbledApplet.php';
 
 
 

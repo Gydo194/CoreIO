@@ -30,10 +30,10 @@ class LoginPage implements Action {
                 <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-                <link rel="stylesheet" href="res/bootstrap.min.css" />
-                <script src="res/jquery-3.2.1.slim.min.js"></script>
-                <script src="res/popper.min.js"></script>
-                <script src="res/bootstrap.min.js"></script>
+                <link rel="stylesheet" href="web/res/bootstrap.min.css" />
+                <script src="web/res/jquery-3.2.1.slim.min.js"></script>
+                <script src="web/res/popper.min.js"></script>
+                <script src="web/res/bootstrap.min.js"></script>
 
 
 
@@ -45,7 +45,7 @@ class LoginPage implements Action {
 
                     body {
                         height: 100%;
-                        background-image: url("res/img/login.jpg");
+                        background-image: url("web/res/img/login.jpg");
                     }
 
 
@@ -183,7 +183,7 @@ class LoginPage implements Action {
                 <div class="container">
                     <div class="card card-container col-sm-12 col-md-8 col-lg-4">
                         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
-                        <img id="profile-img" class="profile-img-card" src="res/img/user.png" />
+                        <img id="profile-img" class="profile-img-card" src="web/res/img/user.png" />
                         <p id="profile-name" class="profile-name-card"></p>
                         <!--  <span><b>Welcome to <?php echo APP_NAME; ?> v2.0.1 beta</b></span> -->
                         <span class="card-text text-sm-left text-md-center text-lg-center">Please sign in</span>
