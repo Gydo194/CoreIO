@@ -12,8 +12,7 @@
  * @author gydo194
  */
 class Request {
-    //put your code here
-   private static function getRequestParameter(string $name): string {
+   public static function getRequestParameter(string $name): string {
         if (isset($_REQUEST[$name])) {
             return $_REQUEST[$name];
         } else {

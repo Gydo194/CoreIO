@@ -29,7 +29,7 @@ class RGBLedController {
         return $this->dao->getRgbLed($id);
     }
 
-    public function updateRedById(int $id, int $red): bool { //trycatch incase DAO cant find
+    public function updateRedById(int $id, int $red): bool {
         try {  
             $led = $this->dao->getRgbLed($id); //we need the group to send to and pin mapping values; still need to reach out to DB :(\
             ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getRedPin(), $red));
@@ -79,6 +79,47 @@ class RGBLedController {
         return true;
     }
     
+    
+    
+    public function updateRedByIdWebWrapper() { //TODO: implement permission; make constant for rgbled_id and value params
+        $id = intval(Request::getRequestParameter("rgbled_id"));
+        $red = intval(Request::getRequestParameter("value"));
+        
+        
+        if(self::updateRedById($id,$red)) {
+            echo "{\"success\":true}";
+        }
+        else {
+            echo "{\"success\":false}";
+        }
+    }
+    
+    
+    public function updateGreenByIdWebWrapper() {
+        $id = intval(Request::getRequestParameter("rgbled_id"));
+        $green = intval(Request::getRequestParameter("value"));
+        
+        if(self::updateGreenById($id,$green)) {
+            echo "{\"success\":true}";
+        }
+        else {
+            echo "{\"success\":false}";
+        }
+    }
+    
+    
+    
+    public function updateBlueByIdWebWrapper() {
+        $id = intval(Request::getRequestParameter("rgbled_id"));
+        $blue = intval(Request::getRequestParameter("value"));
+        
+        if(self::updateBlueById($id,$blue)) {
+            echo "{\"success\":true}";
+        }
+        else {
+            echo "{\"success\":false}";
+        }
+    }
     
 
 }

@@ -4,6 +4,9 @@ defined("AF3_404_ACTION") || define("AF3_404_ACTION", "404");
 defined("AF3_UAUTH_ACTION") || define("AF3_UAUTH_ACTION", "UAUTH");
 defined("AF3_ERROR_ACTION") || define("AF3_ERROR_ACTION", "ERROR");
 
+
+defined("LOGIN_ACTION") || define("LOGIN_ACTION", "login");
+
 class ActionFramework {
 
     private static $actions = array();
@@ -48,7 +51,24 @@ class ActionFramework {
         }
     }
 
+// customizations
     private static function handleUnauthorised() {
+        if (UserController::isLoggedIn()) {
+            self::unauth();
+        } else {
+            self::unauthLogin();
+        }
+    }
+
+    private static function unauthLogin() {
+        if (UserController::sessionActive()) {
+            self::invoke(LOGIN_ACTION);
+        } else {
+            print("Unauthorised");
+        }
+    }
+
+    private static function unauth() {
         if (self::hasAction(AF3_UAUTH_ACTION)) {
             self::invoke(AF3_UAUTH_ACTION);
         } else {
@@ -56,6 +76,7 @@ class ActionFramework {
         }
     }
 
+//end customizations
     private static function handleExecutionException() {
         if (self::hasAction(AF3_ERROR_ACTION)) {
             self::invoke(AF3_ERROR_ACTION);

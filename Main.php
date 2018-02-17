@@ -4,9 +4,16 @@
  * CoreIO main
  */
 
+//exceptions
+require_once 'utils/InaccessibleDataException.php';
+require_once 'utils/ServerCommunicationException.php';
+require_once 'utils/ServerCommunication.php';
+
+
 //general utility
 require_once 'utils/PDOFactory.php';
 require_once 'utils/Base64Serializeable.php';
+require_once 'utils/Request.php';
 
 require_once 'core/models/interfaces/IUser.php';
 require_once 'core/models/User.php';
@@ -31,10 +38,24 @@ require_once 'web/views/AdminPage.php';
 require_once 'web/views/LoginPage.php';
 require_once 'web/views/LogoutPage.php';
 
+//web datalayer interfaces
+require_once 'web/datalayerinterfaces/IDAORgbLed.php';
 
-//controllers (actions)
+//web datalayers
+require_once 'web/datalayers/MysqlRgbLedDAO.php';
+
+
+//web models
+require_once 'web/models/RgbLed.php';
+
+//web controllers (actions)
 require_once 'web/controllers/TCPSendAction.php';
 require_once 'web/controllers/UserCheckAction.php';
+require 'web/controllers/RGBLedController.php';
+
+//web applets
+require_once 'web/applets/RgbledApplet_.php';
+
 
 //applets
 require_once 'web/applets/RgbledApplet.php';
@@ -95,6 +116,13 @@ ActionFramework::bindAction("send", $snd, "invoke");
 ActionFramework::bindAction("usercheck", $uchck, "invoke");
 ActionFramework::bindAction("rgbled", $rgbled, "invoke");
 ActionFramework::bindAction("main", $mp, "invoke");
+
+//bind rgbled actions
+$rgbled_controller = RGBLedController::getInstance();
+
+ActionFramework::bindAction("updateRgbledRed", $rgbled_controller, "updateRedByIdWebWrapper");
+ActionFramework::bindAction("updateRgbledGreen", $rgbled_controller, "updateGreenByIdWebWrapper");
+ActionFramework::bindAction("updateRgbledBlue", $rgbled_controller, "updateBlueByIdWebWrapper");
 
 
 //get the page/action
