@@ -11,7 +11,7 @@
  *
  * @author gydo194
  */
-class NotFoundPage implements Action {
+class NotFoundPage {
     //put your code here
     public function invoke() {
         echo "<h1>404 not found!</h1>";

@@ -19,9 +19,7 @@ require_once 'core/controllers/SessionController.php';
 require_once 'core/controllers/UserController.php';
 
 
-require_once 'web/ActionFramework/PageRenderException.php';
 require_once 'web/ActionFramework/AccessViolationException.php';
-require_once 'web/ActionFramework/Action.php';
 require_once 'web/ActionFramework/ActionFramework.php';
 
 
@@ -70,7 +68,8 @@ $uchck = new UserCheckAction();
 //applets
 $rgbled = new RgbledApplet();
 
-//add pages
+/*
+//add pages *OLD
 ActionFramework::addPage("test", $tp);
 ActionFramework::addPage("404", $nf);
 ActionFramework::addPage("main", $mp);
@@ -81,7 +80,21 @@ ActionFramework::addPage("logout", $logout);
 ActionFramework::addPage("send", $snd);
 ActionFramework::addPage("usercheck", $uchck);
 ActionFramework::addPage("rgbled", $rgbled);
+*/
 
+//bind pages
+ActionFramework::bindAction("test", $tp, "invoke");
+ActionFramework::bindAction("404", $nf, "invoke");
+//ActionFramework::bindAction("ERROR", $tp, "invoke");
+ActionFramework::bindAction("UNAUTH", $uauth, "invoke");
+ActionFramework::bindAction("admin", $admin, "invoke");
+ActionFramework::bindAction("login", $login, "invoke");
+ActionFramework::bindAction("logout", $logout, "invoke");
+ActionFramework::bindAction("send", $snd, "invoke");
+ActionFramework::bindAction("send", $snd, "invoke");
+ActionFramework::bindAction("usercheck", $uchck, "invoke");
+ActionFramework::bindAction("rgbled", $rgbled, "invoke");
+ActionFramework::bindAction("main", $mp, "invoke");
 
 
 //get the page/action
@@ -94,4 +107,4 @@ if(isset($_REQUEST[VIEW_PAGE_PARAM_NAME])) {
 UserController::login();
 
 //render the page
-ActionFramework::invokeAction($page); //the page render functions decide whether or not the user is authorised to see the page
+ActionFramework::invoke($page); //the page render functions decide whether or not the user is authorised to see the page

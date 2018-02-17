@@ -14,7 +14,7 @@
 
 defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
 
-class AdminPage implements Action {
+class AdminPage {
     //put your code here
     public function invoke() {
         

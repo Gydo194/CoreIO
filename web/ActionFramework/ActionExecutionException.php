@@ -7,10 +7,10 @@
  */
 
 /**
+ * Description of ActionExecutionException
  *
  * @author gydo194
  */
-interface Action {
+class ActionExecutionException extends Exception {
     //put your code here
-    public function invoke();
 }

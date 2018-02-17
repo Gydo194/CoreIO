@@ -12,7 +12,7 @@
  */
 defined("RGBLED_PERMISSION_NAME") || define("RGBLED_PERMISSION_NAME", "main"); //just use the main permission
 
-class RgbledApplet implements Action {
+class RgbledApplet {
 
     public function invoke() {
         if (!UserController::getPermission(RGBLED_PERMISSION_NAME)) {

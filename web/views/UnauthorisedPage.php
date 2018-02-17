@@ -11,7 +11,7 @@
  *
  * @author gydo194
  */
-class UnauthorisedPage implements Action {
+class UnauthorisedPage {
     //put your code here
     public function invoke() {
         echo "<h1>Unauthorised! (page)</h1>";

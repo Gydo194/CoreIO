@@ -10,7 +10,7 @@
  *
  * @author gydo194
  */
-class LoginPage implements Action {
+class LoginPage{
 
     //put your code here
     /*

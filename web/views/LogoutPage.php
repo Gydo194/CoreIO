@@ -11,7 +11,7 @@
  *
  * @author gydo194
  */
-class LogoutPage implements Action {
+class LogoutPage {
     //put your code here
     public function invoke() {
         UserController::logout();

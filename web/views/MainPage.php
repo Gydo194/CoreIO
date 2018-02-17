@@ -13,7 +13,7 @@
 
 defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
 
-class MainPage implements Action {
+class MainPage {
 
     //put your code here
     /*
@@ -116,12 +116,12 @@ class MainPage implements Action {
 
                         <div class="row">
 
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
-                            <?php ActionFramework::invokeAction("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
+                            <?php ActionFramework::invoke("rgbled"); ?>
 
 
                         </div>
