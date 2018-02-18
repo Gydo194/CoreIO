@@ -367,6 +367,20 @@ class RgbledApplet_ {
 
         <script>
 
+            //statis text
+            function rgbled_<?php echo $rgbled_id; ?>_success() {
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"green\">Success</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
+            }
+            function rgbled_<?php echo $rgbled_id; ?>_failure() {
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"red\">Failed</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
+            }
+            function rgbled_<?php echo $rgbled_id; ?>_reset() {
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
+            }
+
             //updating
             function buildXHR() {
                 var x = new XMLHttpRequest();
@@ -379,7 +393,25 @@ class RgbledApplet_ {
             $("#rgbled-input-red<?php echo $rgbled_id; ?>").on("change", function () {
                 var red = $(this).val();
                 console.log("rgbled_<?php echo $rgbled_id; ?>: red:" + red);
-                buildXHR().send("p=updateRgbledRed&rgbled_id=<?php echo $rgbled_id; ?>&value=" + red);
+                var x = buildXHR();
+                x.onload = function () {
+                    if (4 === this.readyState) {
+                        try {
+                            var res = JSON.parse(this.responseText);
+                            if (true === res["success"]) {
+                                console.log("rgbled update: succes");
+
+                                rgbled_<?php echo $rgbled_id; ?>_success();
+                            } else {
+                                console.log("rgbled update: failed");
+                                rgbled_<?php echo $rgbled_id; ?>_failure();
+                            }
+                        } catch (err) {
+                            console.log("rgbled update: json parse failed");
+                        }
+                    }
+                }
+                x.send("p=updateRgbledRed&rgbled_id=<?php echo $rgbled_id; ?>&value=" + red);
             });
             $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () {
                 var green = $(this).val();
