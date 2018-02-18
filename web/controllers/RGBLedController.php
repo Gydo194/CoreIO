@@ -5,6 +5,8 @@
  *
  * @author gydo194
  */
+defined("RGBLED_UPDATE_PERMISSION") || define("RGBLED_UPDATE_PERMISSION", "send");
+
 class RGBLedController {
 
     private static $instance = null;
@@ -92,8 +94,15 @@ class RGBLedController {
     }
 
     public function updateGreenByIdWebWrapper() {
+
+        if (!UserController::getPermission(RGBLED_UPDATE_PERMISSION)) {
+            echo "{\"success\":false,\"reason\":\"unauthorised\"}";
+            return;
+        }
+
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $green = intval(Request::getRequestParameter("value"));
+
 
         if (self::updateGreenById($id, $green)) {
             echo "{\"success\":true}";
@@ -103,6 +112,12 @@ class RGBLedController {
     }
 
     public function updateBlueByIdWebWrapper() {
+
+        if (!UserController::getPermission(RGBLED_UPDATE_PERMISSION)) {
+            echo "{\"success\":false,\"reason\":\"unauthorised\"}";
+            return;
+        }
+
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $blue = intval(Request::getRequestParameter("value"));
 
@@ -114,6 +129,12 @@ class RGBLedController {
     }
 
     public function getValuesById() {
+
+        if (!UserController::getPermission(RGBLED_UPDATE_PERMISSION)) {
+            echo "{\"success\":false,\"reason\":\"unauthorised\"}";
+            return;
+        }
+
         $id = intval(Request::getRequestParameter("rgbled_id"));
         try {
             $led = $this->dao->getRgbLed($id);

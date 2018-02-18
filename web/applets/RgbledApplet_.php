@@ -419,8 +419,9 @@ class RgbledApplet_ {
 
 
             }
-            
-            //setInterval(1000,rgbled_<?php echo $rgbled_id; ?>_poll);
+
+            //set the timer
+            setInterval(rgbled_<?php echo $rgbled_id; ?>_poll, 5000);
 
 
         </script>
