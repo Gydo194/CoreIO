@@ -413,6 +413,8 @@ class RgbledApplet_ {
                 }
                 x.send("p=updateRgbledRed&rgbled_id=<?php echo $rgbled_id; ?>&value=" + red);
             });
+            
+            /*
             $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () {
                 var green = $(this).val();
                 console.log("rgbled_<?php echo $rgbled_id; ?>: green:" + green);
@@ -423,7 +425,66 @@ class RgbledApplet_ {
                 console.log("rgbled_<?php echo $rgbled_id; ?>: blue:" + blue);
                 buildXHR().send("p=updateRgbledBlue&rgbled_id=<?php echo $rgbled_id; ?>&value=" + blue);
             });
+*/
+   
+    $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () {
+                var green = $(this).val();
+                console.log("rgbled_<?php echo $rgbled_id; ?>: green:" + green);
+                var x = buildXHR();
+                x.onload = function () {
+                    if (4 === this.readyState) {
+                        try {
+                            var res = JSON.parse(this.responseText);
+                            if (true === res["success"]) {
+                                console.log("rgbled update: succes");
 
+                                rgbled_<?php echo $rgbled_id; ?>_success();
+                            } else {
+                                console.log("rgbled update: failed");
+                                rgbled_<?php echo $rgbled_id; ?>_failure();
+                            }
+                        } catch (err) {
+                            console.log("rgbled update: json parse failed");
+                        }
+                    }
+                }
+                x.send("p=updateRgbledGreen&rgbled_id=<?php echo $rgbled_id; ?>&value=" + green);
+            });
+            
+            
+            
+             $("#rgbled-input-blue<?php echo $rgbled_id; ?>").on("change", function () {
+                var blue = $(this).val();
+                console.log("rgbled_<?php echo $rgbled_id; ?>: blue:" + blue);
+                var x = buildXHR();
+                x.onload = function () {
+                    if (4 === this.readyState) {
+                        try {
+                            var res = JSON.parse(this.responseText);
+                            if (true === res["success"]) {
+                                console.log("rgbled update: succes");
+
+                                rgbled_<?php echo $rgbled_id; ?>_success();
+                            } else {
+                                console.log("rgbled update: failed");
+                                rgbled_<?php echo $rgbled_id; ?>_failure();
+                            }
+                        } catch (err) {
+                            console.log("rgbled update: json parse failed");
+                        }
+                    }
+                }
+                x.send("p=updateRgbledBlue&rgbled_id=<?php echo $rgbled_id; ?>&value=" + blue);
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 
             //polling
