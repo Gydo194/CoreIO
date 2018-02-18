@@ -312,14 +312,14 @@ class RgbledApplet_ {
                             <div class="row justify-content-center">
 
 
-                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="rgbled-slider-red" min="0" max="255" value="0" >
+                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="rgbled-slider-red" min="0" max="255" value="<?php echo $red; ?>" >
 
                             </div>
 
                             <!-- green slider -->
                             <div class="row justify-content-center">
 
-                                <input type="range" id="rgbled-input-green<?php echo $rgbled_id; ?>" class="rgbled-slider-green" min="0" max="255" value="0" >
+                                <input type="range" id="rgbled-input-green<?php echo $rgbled_id; ?>" class="rgbled-slider-green" min="0" max="255" value="<?php echo $green; ?>" >
 
 
                             </div>
@@ -327,7 +327,7 @@ class RgbledApplet_ {
                             <!-- blue slider -->
                             <div class="row justify-content-center">
 
-                                <input type="range" id="rgbled-input-blue<?php echo $rgbled_id; ?>" class="rgbled-slider-blue" min="0" max="255" value="0" >
+                                <input type="range" id="rgbled-input-blue<?php echo $rgbled_id; ?>" class="rgbled-slider-blue" min="0" max="255" value="<?php echo $blue; ?>" >
 
 
                             </div>

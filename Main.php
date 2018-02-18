@@ -57,8 +57,8 @@ require 'web/controllers/RGBLedController.php';
 require_once 'web/applets/RgbledApplet_.php';
 
 
-//applets
-require_once 'web/applets/RgbledApplet.php';
+//applets old
+//require_once 'web/applets/RgbledApplet.php';
 
 
 
@@ -87,7 +87,7 @@ $logout = new LogoutPage();
 $snd = new TCPSendAction();
 $uchck = new UserCheckAction();
 //applets
-$rgbled = new RgbledApplet();
+//$rgbled = new RgbledApplet();
 
 /*
 //add pages *OLD
@@ -114,7 +114,7 @@ ActionFramework::bindAction("logout", $logout, "invoke");
 ActionFramework::bindAction("send", $snd, "invoke");
 ActionFramework::bindAction("send", $snd, "invoke");
 ActionFramework::bindAction("usercheck", $uchck, "invoke");
-ActionFramework::bindAction("rgbled", $rgbled, "invoke");
+//ActionFramework::bindAction("rgbled", $rgbled, "invoke");
 ActionFramework::bindAction("main", $mp, "invoke");
 
 //bind rgbled actions
