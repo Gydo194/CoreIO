@@ -30,7 +30,7 @@ class RGBLedController {
     }
 
     public function updateRedById(int $id, int $red): bool {
-        try {  
+        try {
             $led = $this->dao->getRgbLed($id); //we need the group to send to and pin mapping values; still need to reach out to DB :(\
             ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getRedPin(), $red));
             $led->setRed($red);
@@ -78,48 +78,57 @@ class RGBLedController {
         }
         return true;
     }
-    
-    
-    
+
     public function updateRedByIdWebWrapper() { //TODO: implement permission; make constant for rgbled_id and value params
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $red = intval(Request::getRequestParameter("value"));
-        
-        
-        if(self::updateRedById($id,$red)) {
+
+
+        if (self::updateRedById($id, $red)) {
             echo "{\"success\":true}";
-        }
-        else {
+        } else {
             echo "{\"success\":false}";
         }
     }
-    
-    
+
     public function updateGreenByIdWebWrapper() {
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $green = intval(Request::getRequestParameter("value"));
-        
-        if(self::updateGreenById($id,$green)) {
+
+        if (self::updateGreenById($id, $green)) {
             echo "{\"success\":true}";
-        }
-        else {
+        } else {
             echo "{\"success\":false}";
         }
     }
-    
-    
-    
+
     public function updateBlueByIdWebWrapper() {
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $blue = intval(Request::getRequestParameter("value"));
-        
-        if(self::updateBlueById($id,$blue)) {
+
+        if (self::updateBlueById($id, $blue)) {
             echo "{\"success\":true}";
-        }
-        else {
+        } else {
             echo "{\"success\":false}";
         }
     }
-    
+
+    public function getValuesById() {
+        $id = intval(Request::getRequestParameter("rgbled_id"));
+        try {
+            $led = $this->dao->getRgbLed($id);
+        } catch (InaccessibleDataException $e) {
+            echo "{\"success\":false}";
+            return;
+        }
+
+        $arr = array(
+            "success" => true,
+            "red" => $led->getRed(),
+            "green" => $led->getGreen(),
+            "blue" => $led->getBlue()
+        );
+        echo json_encode($arr, true);
+    }
 
 }

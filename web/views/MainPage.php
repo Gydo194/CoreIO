@@ -186,7 +186,8 @@ class MainPage {
                     timer = setInterval(checkSession, 3000);
 
 
-
+                    //set the timer
+                    setInterval(rgbled_1_poll,5000);
 
 
                 </script>

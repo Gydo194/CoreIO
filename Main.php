@@ -64,7 +64,7 @@ require_once 'web/applets/RgbledApplet_.php';
 
 //define constants
 defined("APP_NAME") || define("APP_NAME","CoreIO");
-defined("APP_VERSION") || define("APP_VERSION","7.2.1");
+defined("APP_VERSION") || define("APP_VERSION","7.2.3");
 defined("VIEW_PAGE_PARAM_NAME") || define("VIEW_PAGE_PARAM_NAME","p");
 
 defined("ADMIN_PAGE_PERMISSION_NAME") || define("ADMIN_PAGE_PERMISSION_NAME","admin");
@@ -123,6 +123,7 @@ $rgbled_controller = RGBLedController::getInstance();
 ActionFramework::bindAction("updateRgbledRed", $rgbled_controller, "updateRedByIdWebWrapper");
 ActionFramework::bindAction("updateRgbledGreen", $rgbled_controller, "updateGreenByIdWebWrapper");
 ActionFramework::bindAction("updateRgbledBlue", $rgbled_controller, "updateBlueByIdWebWrapper");
+ActionFramework::bindAction("rgbledGetValues", $rgbled_controller, "getValuesById");
 
 
 //get the page/action

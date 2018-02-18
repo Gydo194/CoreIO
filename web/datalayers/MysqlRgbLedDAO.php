@@ -39,6 +39,13 @@ class MysqlRgbLedDAO implements IDAORgbLed {
     public function getRgbLed(int $id): RgbLed {
         $s = PDOFactory::query("SELECT groupname,red,green,blue,redpin,greenpin,bluepin FROM " . MYSQL_RGBLED_USER_TABLE_NAME . " WHERE id = ? LIMIT 1;", array($id));
         $res = $s->fetch(PDO::FETCH_ASSOC);
+
+
+        if ($s->rowCount() !== 1) {
+            //error_log("MysqlRgbledDAO::getRgbLed: rgbled id:".$id);
+            throw new InaccessibleDataException("MysqlRgbledDAO::getRgbLed: no results from database");
+        }
+
         $led = new RgbLed();
 
         $led->setId($id); //dont forget it!
@@ -69,7 +76,7 @@ class MysqlRgbLedDAO implements IDAORgbLed {
     }
 
     public function updateRgbLed(\RgbLed $led) {
-        
+
         $s = PDOFactory::query("UPDATE " . MYSQL_RGBLED_USER_TABLE_NAME . " SET groupname = ?, red = ?, green = ?, blue = ?, redpin = ?, greenpin = ?, bluepin = ? WHERE id = ?;", array(
                     $led->getGroup(),
                     $led->getRed(),
@@ -80,7 +87,6 @@ class MysqlRgbLedDAO implements IDAORgbLed {
                     $led->getBluePin(),
                     $led->getId()
         ));
-
     }
 
 }
