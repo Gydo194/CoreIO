@@ -34,9 +34,9 @@ class RGBLedController {
     public function updateRedById(int $id, int $red): bool {
         try {
             $led = $this->dao->getRgbLed($id); //we need the group to send to and pin mapping values; still need to reach out to DB :(\
-            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getRedPin(), $red));
             $led->setRed($red);
             $this->dao->updateRgbLed($led); //and there we go; second query D:
+            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getRedPin(), $red));
         } catch (InaccessibleDataException $ex) {
             error_log("RGBLedController::updateRedById(): caught InaccessibleDataException from DAO.");
             return false;
@@ -52,9 +52,9 @@ class RGBLedController {
     public function updateGreenById(int $id, int $green): bool {
         try {
             $led = $this->dao->getRgbLed($id);
-            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getGreenPin(), $green));
             $led->setGreen($green);
             $this->dao->updateRgbLed($led);
+            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getGreenPin(), $green));
         } catch (InaccessibleDataException $ex) {
             error_log("RGBLedController::updateRedById(): caught InaccessibleDataException from DAO.");
             return false;
@@ -68,9 +68,9 @@ class RGBLedController {
     public function updateBlueById(int $id, int $blue): bool {
         try {
             $led = $this->dao->getRgbLed($id);
-            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getBluePin(), $blue));
             $led->setBlue($blue);
             $this->dao->updateRgbLed($led);
+            ServerCommunication::send($led->getGroup(), self::generateArduinoAWSendCommand($led->getBluePin(), $blue));
         } catch (InaccessibleDataException $ex) {
             error_log("RGBLedController::updateRedById(): caught InaccessibleDataException from DAO.");
             return false;

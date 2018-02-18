@@ -378,7 +378,6 @@ class RgbledApplet_ {
             }
             function rgbled_<?php echo $rgbled_id; ?>_reset() {
                 $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("");
-                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
             }
 
             //updating
