@@ -7,14 +7,10 @@
  */
 
 /**
- * Description of UnauthorisedPage
+ * Description of ServerCommunicationException
  *
  * @author gydo194
  */
-class UnauthorisedPage {
-    //put your code here
-    public function invoke() {
-        echo "<h1>Unauthorised! (page)</h1>";
-    }
-
+class ServerCommunicationException extends Exception {
+    //thrown by ServerCommunication if it cannot connect
 }

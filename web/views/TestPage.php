@@ -11,7 +11,7 @@
  *
  * @author gydo194
  */
-class TestPage implements Action {
+class TestPage {
     //put your code here
     
     public function invoke() {

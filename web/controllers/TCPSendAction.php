@@ -19,7 +19,7 @@ defined("HOST") || define("HOST","core.io");
 defined("PORT") || define("PORT",3000);
 
 
-class TCPSendAction implements Action {
+class TCPSendAction {
    
      private function send2($msg) {
         $host = gethostbyname(HOST);

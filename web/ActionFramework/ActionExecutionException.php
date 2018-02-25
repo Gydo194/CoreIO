@@ -7,14 +7,10 @@
  */
 
 /**
- * Description of UnauthorisedPage
+ * Description of ActionExecutionException
  *
  * @author gydo194
  */
-class UnauthorisedPage {
+class ActionExecutionException extends Exception {
     //put your code here
-    public function invoke() {
-        echo "<h1>Unauthorised! (page)</h1>";
-    }
-
 }

@@ -7,10 +7,15 @@
  */
 
 /**
- * Description of PageRenderException
  *
  * @author gydo194
  */
-class PageRenderException extends Exception {
-    //put your code here
+interface IDAORgbLed {
+    public function createRgbLed(RgbLed $led);
+    public function deleteRgbLed(RgbLed $led);
+    public function updateRgbLed(RgbLed $led);
+    
+    
+    public function getRgbLed(int $id);
+    
 }

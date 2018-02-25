@@ -6,7 +6,7 @@
  *
  * @author gydo194
  */
-class UserCheckAction implements Action {
+class UserCheckAction {
 
     public function invoke() {
         if (UserController::isLoggedIn()) {
