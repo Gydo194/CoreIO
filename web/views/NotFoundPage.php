@@ -7,15 +7,14 @@
  */
 
 /**
- * Description of LogoutPage
+ * Description of NotFoundPage
  *
  * @author gydo194
  */
-class LogoutPage implements Action {
+class NotFoundPage {
     //put your code here
     public function invoke() {
-        UserController::logout();
-        echo "<b>Logout successful</b>";
+        echo "<h1>404 not found!</h1>";
     }
 
 }

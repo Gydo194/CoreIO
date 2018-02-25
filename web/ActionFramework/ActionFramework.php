@@ -1,124 +1,87 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+defined("AF3_404_ACTION") || define("AF3_404_ACTION", "404");
+defined("AF3_UAUTH_ACTION") || define("AF3_UAUTH_ACTION", "UAUTH");
+defined("AF3_ERROR_ACTION") || define("AF3_ERROR_ACTION", "ERROR");
 
-/**
- * Description of ViewFramework
- *
- * @author gydo194
- */
 
-defined("VIEW_404_PAGE_NAME") || define("VIEW_404_PAGE_NAME","404");
-defined("VIEW_UNAUTH_PAGE_NAME") || define("VIEW_UNAUTH_PAGE_NAME","unauth");
-defined("VIEW_LOGIN_PAGE_NAME") || define("VIEW_LOGIN_PAGE_NAME","login");
-
+defined("LOGIN_ACTION") || define("LOGIN_ACTION", "login");
 
 class ActionFramework {
 
-    //put your code here
-    private static $pages = array();
+    private static $actions = array();
 
-    public static function addPage(string $name, Action $page) {
-        self::$pages[$name] = $page;
-    }
-
-    public static function getPage(string $name) {
-        return self::$pages[$name];
-    }
-
-    public static function hasPage(string $name) {
-        return array_key_exists($name, self::$pages);
-    }
-
-    /*
-      public static function render(string $name) {
-      if(self::hasPage($name)) {
-      try {
-      self::getPage($name)->invoke();
-      } catch (PageRenderException $ex) {
-      error_log("ViewFramework::render(): caught PageRenderException.");
-      return false;
-      }
-      } else {
-      echo "page does not exist";
-      }
-      }
+    /**
+     * 
+     * @param string $name the name to bind the action to
+     * @param type $object the object reference to call a function on
+     * @param string $funcName the name of the function to call
      */
+    public static function bindAction(string $name, &$object, string $funcName) {
+        self::$actions[$name] = array("ref" => $object, "name" => $funcName);
+    }
 
-    private static function render(string $name) {
+    public static function hasAction(string $name) {
+        return array_key_exists($name, self::$actions);
+    }
+
+    /**
+     * 
+     * @param string $name the function name to call
+     */
+    public static function invoke(string $name) {
+        if (!self::hasAction($name)) {
+            self::handleNotFound();
+            return;
+        }
         try {
-            self::getPage($name)->invoke();
-        } catch (PageRenderException $ex) {
-            error_log("ViewFramework::render(): caught PageRenderException.");
-            return false;
-        } catch(AccessViolationException $ae) {
+            call_user_func(array(self::$actions[$name]["ref"], self::$actions[$name]["name"]));
+        } catch (ActionExecutionException $e) {
+            self::handleExecutionException();
+        } catch (AccessViolationException $e) {
             self::handleUnauthorised();
         }
-        return true;
     }
-   
-    
-    
 
-    public static function invokeAction(string $page) {
-        if(self::hasPage($page)) {
-            //self::getPage($page)->invoke();
-            self::render($page);
+    private static function handleNotFound() {
+        if (self::hasAction(AF3_404_ACTION)) {
+            self::invoke(AF3_404_ACTION);
         } else {
-            self::renderNotFoundPage();
+            print("404");
         }
     }
-    
-    
-    
+
+// customizations
     private static function handleUnauthorised() {
-       // echo "handleUnauthorised():".UserController::isLoggedIn();
-        if(UserController::isLoggedIn()) { //the only line in this file depending on another file
-            self::renderUnauthorisedPage();
+        if (UserController::isLoggedIn()) {
+            self::unauth();
         } else {
-            if(!session_id()) {
-                //no session mode; don't say anything
-                return;
-            }
-            self::renderLoginPage();
+            self::unauthLogin();
         }
     }
-    
-    
-    
-    
-    
-    
 
-    private static function renderNotFoundPage() {
-        if (self::hasPage(VIEW_404_PAGE_NAME)) {
-            self::render(VIEW_404_PAGE_NAME);
-        }
-        else {
-            echo "404";
-        }
-    }
-    
-    
-     private static function renderUnauthorisedPage() {
-        if (self::hasPage(VIEW_UNAUTH_PAGE_NAME)) {
-            self::render(VIEW_UNAUTH_PAGE_NAME);
-        }
-        else {
-            echo "Unauthorised";
+    private static function unauthLogin() {
+        if (UserController::sessionActive()) {
+            self::invoke(LOGIN_ACTION);
+        } else {
+            print("Unauthorised");
         }
     }
-    
-     private static function renderLoginPage() {
-        if (self::hasPage(VIEW_LOGIN_PAGE_NAME)) {
-            self::render(VIEW_LOGIN_PAGE_NAME);
+
+    private static function unauth() {
+        if (self::hasAction(AF3_UAUTH_ACTION)) {
+            self::invoke(AF3_UAUTH_ACTION);
+        } else {
+            print("Unauthorised");
         }
-        else {
-            echo "Please log in.";
+    }
+
+//end customizations
+    private static function handleExecutionException() {
+        if (self::hasAction(AF3_ERROR_ACTION)) {
+            self::invoke(AF3_ERROR_ACTION);
+        } else {
+            print("Error");
         }
     }
 

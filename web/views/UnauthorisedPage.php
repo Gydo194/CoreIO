@@ -7,14 +7,14 @@
  */
 
 /**
- * Description of NotFoundPage
+ * Description of UnauthorisedPage
  *
  * @author gydo194
  */
-class NotFoundPage implements Action {
+class UnauthorisedPage {
     //put your code here
     public function invoke() {
-        echo "<h1>404 not found!</h1>";
+        echo "<h1>Unauthorised! (page)</h1>";
     }
 
 }

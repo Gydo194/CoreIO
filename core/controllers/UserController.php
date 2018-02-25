@@ -109,7 +109,9 @@ class UserController {
         return self::$user->getUserName();
     }
     
-    
+    public static function sessionActive() {
+        return session_id() !== "";
+    }
     
    
 

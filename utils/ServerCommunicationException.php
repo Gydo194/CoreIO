@@ -7,10 +7,10 @@
  */
 
 /**
- * Description of PageRenderException
+ * Description of ServerCommunicationException
  *
  * @author gydo194
  */
-class PageRenderException extends Exception {
-    //put your code here
+class ServerCommunicationException extends Exception {
+    //thrown by ServerCommunication if it cannot connect
 }

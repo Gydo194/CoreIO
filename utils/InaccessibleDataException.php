@@ -7,10 +7,10 @@
  */
 
 /**
+ * Description of InaccessibleDataException
  *
  * @author gydo194
  */
-interface Action {
-    //put your code here
-    public function invoke();
+class InaccessibleDataException extends Exception {
+    //thrown by DAOs if they cannot connect or cannot find requested data
 }

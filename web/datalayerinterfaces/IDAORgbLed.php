@@ -7,14 +7,15 @@
  */
 
 /**
- * Description of UnauthorisedPage
  *
  * @author gydo194
  */
-class UnauthorisedPage implements Action {
-    //put your code here
-    public function invoke() {
-        echo "<h1>Unauthorised! (page)</h1>";
-    }
-
+interface IDAORgbLed {
+    public function createRgbLed(RgbLed $led);
+    public function deleteRgbLed(RgbLed $led);
+    public function updateRgbLed(RgbLed $led);
+    
+    
+    public function getRgbLed(int $id);
+    
 }
