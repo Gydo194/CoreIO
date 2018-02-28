@@ -54,7 +54,7 @@ require_once 'web/controllers/UserCheckAction.php';
 require 'web/controllers/RGBLedController.php';
 
 //web applets
-require_once 'web/applets/RgbledApplet_.php';
+require_once 'web/applets/RgbledApplet.php';
 
 
 //applets old

@@ -6,25 +6,20 @@
  */
 
 /**
- * Description of RgbledApplet_
+ * Description of RgbledApplet
  *
  * @author gydo194
  */
-class RgbledApplet_ {
+defined("RGBLED_PERMISSION_NAME") || define("RGBLED_PERMISSION_NAME", "main"); //just use the main permission
 
-    public static function renderApplet(RgbLed $led) {
-        $red = $led->getRed();
-        $green = $led->getGreen();
-        $blue = $led->getBlue();
+class RgbledApplet {
 
-        $redPin = $led->getRedPin();
-        $greenPin = $led->getGreenPin();
-        $bluePin = $led->getBluePin();
-
-        $rgbled_id = $led->getId();
+    public function invoke() {
+        if (!UserController::getPermission(RGBLED_PERMISSION_NAME)) {
+            throw new AccessViolationException();
+        }
+        $rgbled_id = uniqid();
         ?>
-
-
         <style>
             /*rgbled sliders - red*/
             input[type=range].rgbled-slider-red {
@@ -295,6 +290,62 @@ class RgbledApplet_ {
 
 
 
+        <script>
+            function gampsend(channel, message, onsuccess, onerror) {
+                var gcmd = "bsend(CHANNEL,MESSAGE);";
+                var bmsg = btoa(message);
+
+               // console.log("gampsend: message:" + bmsg);
+
+                var msga = gcmd.replace("CHANNEL", channel);
+                var msg = msga.replace("MESSAGE", bmsg);
+
+                var x = new XMLHttpRequest();
+                x.open("POST", "", true);
+                x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                /*
+                 x.onreadystatechange = function() {
+                 if(this.readyState == 4) {
+                 //console.log("Request completed. Response:"+this.response);
+                 return true;
+                 }
+                 else {
+                 //console.log("request busy.. readyState == "+this.readyState);
+                 }
+                 }
+                 */
+
+                x.onload = function () {
+                    //console.log("response='" + this.response + "'");
+                    if (this.readyState == 4) {
+                        // console.log("OK");
+
+                        var json = JSON.parse(this.responseText);
+                        if (json["success"] == true) {
+                            console.log("GAMP command succeeded");
+                             onsuccess(this);
+                        } else {
+                            console.log("GAMP command failed (success=false)");
+                            onerror(this);
+                        }
+                       
+
+                    } else {
+                        return false;
+                    }
+                }
+
+                x.onerror = onerror;
+
+                x.send("p=send&msg=" + msg);
+
+
+            }
+        </script>
+
+
+
+
 
         <!-- RGBLED modal defenition -->
         <div class="modal fade" id="rgbled_<?php echo $rgbled_id; ?>_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -312,14 +363,14 @@ class RgbledApplet_ {
                             <div class="row justify-content-center">
 
 
-                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="rgbled-slider-red" min="0" max="255" value="<?php echo $red; ?>" >
+                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="rgbled-slider-red" min="0" max="255" value="0" >
 
                             </div>
 
                             <!-- green slider -->
                             <div class="row justify-content-center">
 
-                                <input type="range" id="rgbled-input-green<?php echo $rgbled_id; ?>" class="rgbled-slider-green" min="0" max="255" value="<?php echo $green; ?>" >
+                                <input type="range" id="rgbled-input-green<?php echo $rgbled_id; ?>" class="rgbled-slider-green" min="0" max="255" value="0" >
 
 
                             </div>
@@ -327,7 +378,7 @@ class RgbledApplet_ {
                             <!-- blue slider -->
                             <div class="row justify-content-center">
 
-                                <input type="range" id="rgbled-input-blue<?php echo $rgbled_id; ?>" class="rgbled-slider-blue" min="0" max="255" value="<?php echo $blue; ?>" >
+                                <input type="range" id="rgbled-input-blue<?php echo $rgbled_id; ?>" class="rgbled-slider-blue" min="0" max="255" value="0" >
 
 
                             </div>
@@ -361,162 +412,58 @@ class RgbledApplet_ {
         </div>
 
 
+        <!-- end applet container defenition -->
 
 
+        <!-- onclick scripts -->
 
 
         <script>
+            //RGB range slider jQuery events
+            const RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL = "1";
+            const RGBLED_<?php echo $rgbled_id; ?>_RED_PIN = "9";
+            const RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN = "6";
+            const RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN = "5";
 
-            //statis text
-            function rgbled_<?php echo $rgbled_id; ?>_success() {
-                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"green\">Success</font>");
-                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
-            }
-            function rgbled_<?php echo $rgbled_id; ?>_failure() {
-                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"red\">Failed</font>");
-                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset, 2000);
-            }
             function rgbled_<?php echo $rgbled_id; ?>_reset() {
+                console.log("RGBLED_RESET");
                 $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("");
-            }
-
-            //updating
-            function buildXHR() {
-                var x = new XMLHttpRequest();
-                x.open("POST", "", true);
-                x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                return x;
-            }
-
-
-            $("#rgbled-input-red<?php echo $rgbled_id; ?>").on("change", function () {
-                var red = $(this).val();
-                console.log("rgbled_<?php echo $rgbled_id; ?>: red:" + red);
-                var x = buildXHR();
-                x.onload = function () {
-                    if (4 === this.readyState) {
-                        try {
-                            var res = JSON.parse(this.responseText);
-                            if (true === res["success"]) {
-                                console.log("rgbled update: succes");
-
-                                rgbled_<?php echo $rgbled_id; ?>_success();
-                            } else {
-                                console.log("rgbled update: failed");
-                                rgbled_<?php echo $rgbled_id; ?>_failure();
-                            }
-                        } catch (err) {
-                            console.log("rgbled update: json parse failed");
-                        }
-                    }
-                }
-                x.send("p=updateRgbledRed&rgbled_id=<?php echo $rgbled_id; ?>&value=" + red);
-            });
-            
-            /*
-            $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () {
-                var green = $(this).val();
-                console.log("rgbled_<?php echo $rgbled_id; ?>: green:" + green);
-                buildXHR().send("p=updateRgbledGreen&rgbled_id=<?php echo $rgbled_id; ?>&value=" + green);
-            });
-            $("#rgbled-input-blue<?php echo $rgbled_id; ?>").on("change", function () {
-                var blue = $(this).val();
-                console.log("rgbled_<?php echo $rgbled_id; ?>: blue:" + blue);
-                buildXHR().send("p=updateRgbledBlue&rgbled_id=<?php echo $rgbled_id; ?>&value=" + blue);
-            });
-*/
-   
-    $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () {
-                var green = $(this).val();
-                console.log("rgbled_<?php echo $rgbled_id; ?>: green:" + green);
-                var x = buildXHR();
-                x.onload = function () {
-                    if (4 === this.readyState) {
-                        try {
-                            var res = JSON.parse(this.responseText);
-                            if (true === res["success"]) {
-                                console.log("rgbled update: succes");
-
-                                rgbled_<?php echo $rgbled_id; ?>_success();
-                            } else {
-                                console.log("rgbled update: failed");
-                                rgbled_<?php echo $rgbled_id; ?>_failure();
-                            }
-                        } catch (err) {
-                            console.log("rgbled update: json parse failed");
-                        }
-                    }
-                }
-                x.send("p=updateRgbledGreen&rgbled_id=<?php echo $rgbled_id; ?>&value=" + green);
-            });
-            
-            
-            
-             $("#rgbled-input-blue<?php echo $rgbled_id; ?>").on("change", function () {
-                var blue = $(this).val();
-                console.log("rgbled_<?php echo $rgbled_id; ?>: blue:" + blue);
-                var x = buildXHR();
-                x.onload = function () {
-                    if (4 === this.readyState) {
-                        try {
-                            var res = JSON.parse(this.responseText);
-                            if (true === res["success"]) {
-                                console.log("rgbled update: succes");
-
-                                rgbled_<?php echo $rgbled_id; ?>_success();
-                            } else {
-                                console.log("rgbled update: failed");
-                                rgbled_<?php echo $rgbled_id; ?>_failure();
-                            }
-                        } catch (err) {
-                            console.log("rgbled update: json parse failed");
-                        }
-                    }
-                }
-                x.send("p=updateRgbledBlue&rgbled_id=<?php echo $rgbled_id; ?>&value=" + blue);
-            });
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-
-            //polling
-            function rgbled_<?php echo $rgbled_id; ?>_poll() {
-                var x = buildXHR()
-                x.onload = function () {
-                    if (this.readyState === 4) {
-                        try {
-                            var json = JSON.parse(this.responseText);
-                            if (true === json["success"]) {
-                                $("#rgbled-input-red<?php echo $rgbled_id; ?>").val(json["red"]);
-                                $("#rgbled-input-green<?php echo $rgbled_id; ?>").val(json["green"]);
-                                $("#rgbled-input-blue<?php echo $rgbled_id; ?>").val(json["blue"]);
-                            } else {
-                                console.log("rgbled update value: backend reported success false");
-                                console.log(json);
-                            }
-                        } catch (err) {
-                            console.error("rgbled_<?php echo $rgbled_id; ?>_update(): JSON parse error");
-                        }
-
-                    }
-                }
-                x.send("p=rgbledGetValues&rgbled_id=<?php echo $rgbled_id; ?>");
-
 
             }
 
-            //set the timer
-            setInterval(rgbled_<?php echo $rgbled_id; ?>_poll, 5000);
+            function rgbled_<?php echo $rgbled_id; ?>_success() {
+                console.log("RGBLED_SUCCESS");
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"green\">Success</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset,2000);
+            }
 
+            function rgbled_<?php echo $rgbled_id; ?>_failure() {
+                console.log("RGBLED_FAILURE");
+                $("#rgbled_<?php echo $rgbled_id; ?>_status_text").html("<font color=\"red\">Failed</font>");
+                setTimeout(rgbled_<?php echo $rgbled_id; ?>_reset,2000);
+            }
+
+
+            $("#rgbled-input-red<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
+                console.log("rgbled: Red:" + $(this).val());
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_RED_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
+                //alert($(this).val());
+            });
+
+            $("#rgbled-input-green<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
+                console.log("rgbled: Green:" + $(this).val());
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_GREEN_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
+            });
+
+            $("#rgbled-input-blue<?php echo $rgbled_id; ?>").on("change", function () { //was on change mousemove
+                console.log("rgbled: Blue:" + $(this).val());
+                gampsend(RGBLED_<?php echo $rgbled_id; ?>_DEVICE_CHANNEL, "aw(" + RGBLED_<?php echo $rgbled_id; ?>_BLUE_PIN + "," + $(this).val() + ");",rgbled_<?php echo $rgbled_id; ?>_success,rgbled_<?php echo $rgbled_id; ?>_failure);
+            });
 
         </script>
+
+        <!-- end onclick scripts -->
+
         <?php
     }
 
