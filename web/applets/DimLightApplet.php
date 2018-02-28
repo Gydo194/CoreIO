@@ -166,6 +166,107 @@ class DimLightApplet {
                 </div>
             </div>
         </div>
+
+
+        <script>
+
+
+            function dimlight_<?php echo $id; ?>_buildXHR() {
+                var x = new XMLHttpRequest();
+                x.open("POST", "", true);
+                x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                return x;
+            }
+
+
+
+            function dimlight_<?php echo $id; ?>_success() {
+                $("#dimlight_<?php echo $id; ?>_status_text").html("<font color=\"green\">Success</font>");
+                setTimeout(dimlight_<?php echo $id; ?>_reset, 2000);
+                ;
+
+            }
+
+
+            function dimlight_<?php echo $id; ?>_failure() {
+                $("#dimlight_<?php echo $id; ?>_status_text").html("<font color=\"red\">Failed</font>");
+                setTimeout(dimlight_<?php echo $id; ?>_reset, 2000)
+            }
+
+
+            function dimlight_<?php echo $id; ?>_reset() {
+                $("#dimlight_<?php echo $id; ?>_status_text").html("");
+            }
+            
+            
+            
+            
+            function dimlight_<?php echo $id; ?>_poll() {
+                var x = dimlight_<?php echo $id; ?>_buildXHR();
+                
+                x.onload = function() {
+                    //parse JSON and set values accordingly
+                }
+                
+                x.send("p=dimlightGetValue&dimlightid=<?php echo $id; ?>");
+                
+            }
+            
+            
+            
+            
+
+
+
+            $("#dimlight_value_<?php echo $id; ?>").on("change", function () {
+                console.log("Dimlight update called");
+                
+                var val = 0;
+                
+                value = $(this).val();
+                console.log("DimLight: value = " + val);
+
+                var x = dimlight_<?php echo $id; ?>_buildXHR();
+                x.onload = function () {
+                    
+                    console.log("resp = " + this.responseText);
+                    
+                    if (4 === this.readyState) {
+                        
+                        try {
+                            var res = JSON.parse(this.responseText);
+                            if (true === res["success"]) {
+                                console.log("dimlight update: succes");
+
+                                dimlight_<?php echo $id; ?>_success();
+                            } else {
+                                console.log("dimlight update: failed");
+                                
+                                dimlight_<?php echo $id; ?>_failure();
+                            }
+                        } catch (err) {
+                            console.log("dimlight update: json parse failed");
+                            
+                        }
+                    }
+                }
+                x.send("p=updateDimLight&&dimlightid=<?php echo $id; ?>&value=" + value);
+
+
+
+            });
+
+
+
+
+
+
+        </script>
+
+
+
+
+
         <!-- END DIMLIGHT APPLET -->
         <?php
     }

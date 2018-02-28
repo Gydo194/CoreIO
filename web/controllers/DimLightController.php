@@ -33,24 +33,21 @@ class DimLightController {
     public function __construct() {
         $this->dao = MysqlDimLightDAO::getInstance();
     }
-    
-    
-    
+
     private function permissionCheck() {
-        if(!UserController::getPermission(DIMLIGHT_PERMISSION_NAME)) {
+        if (!UserController::getPermission(DIMLIGHT_PERMISSION_NAME)) {
             error_log("Not authorised to perform dimlight action.");
             throw new AccessViolationException();
         }
     }
-    
-    
 
     public function updateDimLight() {
 
         self::permissionCheck();
-        
+
         if (!isset($_REQUEST[DIMLIGHT_REQUEST_ID_VARNAME])) {
             error_log("DimLightController::updateDimLight(): missing id param");
+            echo "{\"success\":false}";
             return;
         }
 
@@ -60,6 +57,7 @@ class DimLightController {
 
         if (null === $d) {
             error_log("DimLightController::updateDimLight(): cannot get dimlight object from dao, is id correct?");
+            echo "{\"success\":false}";
             return;
         }
 
@@ -83,6 +81,8 @@ class DimLightController {
 
 
         $this->dao->updateDimLight($d);
+
+        echo "{\"success\":true}";
     }
 
 }
