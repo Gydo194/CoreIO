@@ -15,6 +15,7 @@ class DimLight {
     private $id = 0; //the mysql database id
     private $value = 0;
     private $pin = 0;
+    private $group = "";
     
     
     function __construct() {
@@ -46,6 +47,14 @@ class DimLight {
 
     function setPin($pin) {
         $this->pin = $pin;
+    }
+
+    function getGroup() {
+        return $this->group;
+    }
+
+    function setGroup($group) {
+        $this->group = $group;
     }
 
 
