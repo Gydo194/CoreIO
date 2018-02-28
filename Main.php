@@ -59,6 +59,7 @@ require_once 'web/controllers/DimLightController.php';
 
 //web applets
 require_once 'web/applets/RgbledApplet.php';
+require_once 'web/applets/DimLightApplet.php';
 
 
 

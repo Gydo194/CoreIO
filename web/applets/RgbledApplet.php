@@ -27,15 +27,15 @@ class RgbledApplet_ {
 
         <style>
             /*rgbled sliders - red*/
-            input[type=range].rgbled-slider-red {
+            input[type=range].dimlight-slider {
                 -webkit-appearance: none;
                 width: 100%;
                 margin: 10.8px 0;
             }
-            input[type=range].rgbled-slider-red:focus {
+            input[type=range].dimlight-slider:focus {
                 outline: none;
             }
-            input[type=range].rgbled-slider-red::-webkit-slider-runnable-track {
+            input[type=range].dimlight-slider::-webkit-slider-runnable-track {
                 width: 100%;
                 height: 8.4px;
                 cursor: pointer;
@@ -44,7 +44,7 @@ class RgbledApplet_ {
                 border-radius: 25px;
                 border: 0.2px solid #010101;
             }
-            input[type=range].rgbled-slider-red::-webkit-slider-thumb {
+            input[type=range].dimlight-slider::-webkit-slider-thumb {
                 box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
                 border: 0.1px solid #000000;
                 height: 30px;
@@ -55,10 +55,10 @@ class RgbledApplet_ {
                 -webkit-appearance: none;
                 margin-top: -11px;
             }
-            input[type=range].rgbled-slider-red:focus::-webkit-slider-runnable-track {
+            input[type=range].dimlight-slider:focus::-webkit-slider-runnable-track {
                 background: #ff1a1a;
             }
-            input[type=range].rgbled-slider-red::-moz-range-track {
+            input[type=range].dimlight-slider::-moz-range-track {
                 width: 100%;
                 height: 8.4px;
                 cursor: pointer;
@@ -67,7 +67,7 @@ class RgbledApplet_ {
                 border-radius: 25px;
                 border: 0.2px solid #010101;
             }
-            input[type=range].rgbled-slider-red::-moz-range-thumb {
+            input[type=range].dimlight-slider::-moz-range-thumb {
                 box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
                 border: 0.1px solid #000000;
                 height: 30px;
@@ -76,7 +76,7 @@ class RgbledApplet_ {
                 background: #ffffff;
                 cursor: pointer;
             }
-            input[type=range].rgbled-slider-red::-ms-track {
+            input[type=range].dimlight-slider::-ms-track {
                 width: 100%;
                 height: 8.4px;
                 cursor: pointer;
@@ -84,19 +84,19 @@ class RgbledApplet_ {
                 border-color: transparent;
                 color: transparent;
             }
-            input[type=range].rgbled-slider-red::-ms-fill-lower {
+            input[type=range].dimlight-slider::-ms-fill-lower {
                 background: #e60000;
                 border: 0.2px solid #010101;
                 border-radius: 50px;
                 box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
             }
-            input[type=range].rgbled-slider-red::-ms-fill-upper {
+            input[type=range].dimlight-slider::-ms-fill-upper {
                 background: #ff0000;
                 border: 0.2px solid #010101;
                 border-radius: 50px;
                 box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
             }
-            input[type=range].rgbled-slider-red::-ms-thumb {
+            input[type=range].dimlight-slider::-ms-thumb {
                 box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
                 border: 0.1px solid #000000;
                 height: 30px;
@@ -106,10 +106,10 @@ class RgbledApplet_ {
                 cursor: pointer;
                 height: 8.4px;
             }
-            input[type=range].rgbled-slider-red:focus::-ms-fill-lower {
+            input[type=range].dimlight-slider:focus::-ms-fill-lower {
                 background: #ff0000;
             }
-            input[type=range].rgbled-slider-red:focus::-ms-fill-upper {
+            input[type=range].dimlight-slider:focus::-ms-fill-upper {
                 background: #ff1a1a;
             }
 
@@ -312,7 +312,7 @@ class RgbledApplet_ {
                             <div class="row justify-content-center">
 
 
-                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="rgbled-slider-red" min="0" max="255" value="<?php echo $red; ?>" >
+                                <input type="range" id="rgbled-input-red<?php echo $rgbled_id; ?>" class="dimlight-slider" min="0" max="255" value="<?php echo $red; ?>" >
 
                             </div>
 
