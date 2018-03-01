@@ -19,4 +19,8 @@ class Request {
             return "";
         }
     }
+    
+    public static function hasRequestParameter(string $name): bool {
+        return isset($_REQUEST[$name]);
+    }
 }

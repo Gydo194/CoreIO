@@ -40,25 +40,29 @@ require_once 'web/views/LogoutPage.php';
 
 //web datalayer interfaces
 require_once 'web/datalayerinterfaces/IDAORgbLed.php';
+require_once 'web/datalayerinterfaces/IDAODimLight.php';
 
 //web datalayers
 require_once 'web/datalayers/MysqlRgbLedDAO.php';
+require_once 'web/datalayers/MysqlDimLightDAO.php';
 
 
 //web models
 require_once 'web/models/RgbLed.php';
+require_once 'web/models/DimLight.php';
 
 //web controllers (actions)
 require_once 'web/controllers/TCPSendAction.php';
 require_once 'web/controllers/UserCheckAction.php';
-require 'web/controllers/RGBLedController.php';
+require_once 'web/controllers/RGBLedController.php';
+require_once 'web/controllers/DimLightController.php';
 
 //web applets
-require_once 'web/applets/RgbledApplet_.php';
+require_once 'web/applets/RgbledApplet.php';
+require_once 'web/applets/DimLightApplet.php';
 
 
-//applets old
-//require_once 'web/applets/RgbledApplet.php';
+
 
 
 
@@ -125,6 +129,11 @@ ActionFramework::bindAction("updateRgbledGreen", $rgbled_controller, "updateGree
 ActionFramework::bindAction("updateRgbledBlue", $rgbled_controller, "updateBlueByIdWebWrapper");
 ActionFramework::bindAction("rgbledGetValues", $rgbled_controller, "getValuesById");
 
+
+$dimlight_controller = DimLightController::getInstance();
+
+ActionFramework::bindAction("updateDimLight", $dimlight_controller, "updateDimLight");
+ActionFramework::bindAction("getDimlightValueById", $dimlight_controller, "getValueById");
 
 //get the page/action
 $page = "main";
