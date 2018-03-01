@@ -105,7 +105,7 @@ class DimLightController {
 
         $arr = array(
             "success" => true,
-            "value" => $d->getValue()
+            "value" => intval($d->getValue())
         );
         echo json_encode($arr, true);
     }

@@ -200,15 +200,27 @@ class DimLightApplet {
             
             
             
-            
+            //poll the server for new values
             function dimlight_<?php echo $id; ?>_poll() {
                 var x = dimlight_<?php echo $id; ?>_buildXHR();
                 
                 x.onload = function() {
                     //parse JSON and set values accordingly
-                }
+                    try {
+                        var json = JSON.parse(this.responseText);
+                        if(true === json["success"]) {
+                            //console.log("dimlight poll success");
+                            $("#dimlight_value_<?php echo $id; ?>").val(json["value"]);
+                        } else {
+                            //console.error("dimlight poll failed");
+                        }
+                    } catch(err) {
+                        console.error("caught error parsing JSON");
+                        console.log("Response was:"+this.responseText)
+                    }
+                };
                 
-                x.send("p=dimlightGetValue&dimlightid=<?php echo $id; ?>");
+                x.send("p=getDimlightValueById&dimlightid=<?php echo $id; ?>");
                 
             }
             
@@ -224,28 +236,28 @@ class DimLightApplet {
                 var val = 0;
                 
                 value = $(this).val();
-                console.log("DimLight: value = " + val);
+                //console.log("DimLight: value = " + val);
 
                 var x = dimlight_<?php echo $id; ?>_buildXHR();
                 x.onload = function () {
                     
-                    console.log("resp = " + this.responseText);
-                    
+                   
                     if (4 === this.readyState) {
                         
                         try {
                             var res = JSON.parse(this.responseText);
                             if (true === res["success"]) {
-                                console.log("dimlight update: succes");
+                                //console.log("dimlight update: succes");
 
                                 dimlight_<?php echo $id; ?>_success();
                             } else {
-                                console.log("dimlight update: failed");
+                                //console.log("dimlight update: failed");
                                 
                                 dimlight_<?php echo $id; ?>_failure();
                             }
                         } catch (err) {
                             console.log("dimlight update: json parse failed");
+                            console.log("erronous response was: '"+this.responseText+"'.");
                             
                         }
                     }
@@ -257,7 +269,9 @@ class DimLightApplet {
             });
 
 
-
+            //start the dimlight update timer
+            var dimlight_<?php echo $id; ?>_timer = setInterval(dimlight_<?php echo $id; ?>_poll,5000);
+            //console.log("dimlight timer:"+dimlight_<?php echo $id; ?>_timer);
 
 
 
