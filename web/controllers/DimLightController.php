@@ -84,5 +84,31 @@ class DimLightController {
 
         echo "{\"success\":true}";
     }
+    
+    
+    
+    
+     public function getValueById() {
+         $d = null;
+        if (!UserController::getPermission(DIMLIGHT_PERMISSION_NAME)) {
+            echo "{\"success\":false,\"reason\":\"unauthorised\"}";
+            return;
+        }
+
+        $id = intval(Request::getRequestParameter(DIMLIGHT_REQUEST_ID_VARNAME));
+        try {
+            $d = $this->dao->getDimLight($id);
+        } catch (InaccessibleDataException $e) {
+            echo "{\"success\":false}";
+            return;
+        }
+
+        $arr = array(
+            "success" => true,
+            "value" => $d->getValue()
+        );
+        echo json_encode($arr, true);
+    }
+    
 
 }

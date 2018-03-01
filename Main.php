@@ -133,6 +133,7 @@ ActionFramework::bindAction("rgbledGetValues", $rgbled_controller, "getValuesByI
 $dimlight_controller = DimLightController::getInstance();
 
 ActionFramework::bindAction("updateDimLight", $dimlight_controller, "updateDimLight");
+ActionFramework::bindAction("getDimlightValueById", $dimlight_controller, "getValueById");
 
 //get the page/action
 $page = "main";
