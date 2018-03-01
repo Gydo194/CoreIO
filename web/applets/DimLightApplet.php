@@ -142,8 +142,8 @@ class DimLightApplet {
                     </div>
                     <div class="modal-footer">
                         <span id="dimlight_<?php echo $id; ?>_status_text"></span>
-                        <button  class="btn ptn-primary">On</button>
-                        <button  class="btn ptn-warning">Off</button>
+                        <button  class="btn btn-success" id="dimlight_<?php echo $id; ?>_on">On</button>
+                        <button  class="btn btn-danger" id="dimlight_<?php echo $id; ?>_off">Off</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <!-- <button type="button" class="btn btn-primary" onclick="alert('applied null');">Apply</button> -->
                     </div>
@@ -197,53 +197,61 @@ class DimLightApplet {
             function dimlight_<?php echo $id; ?>_reset() {
                 $("#dimlight_<?php echo $id; ?>_status_text").html("");
             }
-            
-            
-            
+
+
+
             //poll the server for new values
             function dimlight_<?php echo $id; ?>_poll() {
                 var x = dimlight_<?php echo $id; ?>_buildXHR();
-                
-                x.onload = function() {
+
+                x.onload = function () {
                     //parse JSON and set values accordingly
                     try {
                         var json = JSON.parse(this.responseText);
-                        if(true === json["success"]) {
+                        if (true === json["success"]) {
                             //console.log("dimlight poll success");
                             $("#dimlight_value_<?php echo $id; ?>").val(json["value"]);
                         } else {
                             //console.error("dimlight poll failed");
                         }
-                    } catch(err) {
+                    } catch (err) {
                         console.error("caught error parsing JSON");
-                        console.log("Response was:"+this.responseText)
+                        console.log("Response was:" + this.responseText)
                     }
                 };
-                
+
                 x.send("p=getDimlightValueById&dimlightid=<?php echo $id; ?>");
-                
+
             }
-            
-            
-            
-            
 
 
 
-            $("#dimlight_value_<?php echo $id; ?>").on("change", function () {
+
+
+
+
+
+
+
+
+
+
+
+            function dimlight_<?php echo $id; ?>_update() {
+
                 console.log("Dimlight update called");
-                
+
                 var val = 0;
-                
-                value = $(this).val();
+
+                value = $("#dimlight_value_<?php echo $id; ?>").val();
                 //console.log("DimLight: value = " + val);
 
                 var x = dimlight_<?php echo $id; ?>_buildXHR();
                 x.onload = function () {
-                    
-                   
+
+
                     if (4 === this.readyState) {
-                        
+
                         try {
                             var res = JSON.parse(this.responseText);
                             if (true === res["success"]) {
@@ -252,25 +260,55 @@ class DimLightApplet {
                                 dimlight_<?php echo $id; ?>_success();
                             } else {
                                 //console.log("dimlight update: failed");
-                                
+
                                 dimlight_<?php echo $id; ?>_failure();
                             }
                         } catch (err) {
                             console.log("dimlight update: json parse failed");
-                            console.log("erronous response was: '"+this.responseText+"'.");
-                            
+                            console.log("erronous response was: '" + this.responseText + "'.");
+
                         }
                     }
                 }
                 x.send("p=updateDimLight&&dimlightid=<?php echo $id; ?>&value=" + value);
 
+            }
+
+
+
+
+
+
+
+
+
+            //INPUT scripts
+
+
+            $("#dimlight_<?php echo $id; ?>_on").on("click", function () {
+                console.log("turning on");
+                $("#dimlight_value_<?php echo $id; ?>").val(255);
+                dimlight_<?php echo $id; ?>_update();
+            });
+
+            $("#dimlight_<?php echo $id; ?>_off").on("click", function () {
+                console.log("turning off");
+                $("#dimlight_value_<?php echo $id; ?>").val(0);
+                dimlight_<?php echo $id; ?>_update();
+            });
+
+
+
+
+            $("#dimlight_value_<?php echo $id; ?>").on("change", function () {
+                dimlight_<?php echo $id; ?>_update();
 
 
             });
 
 
             //start the dimlight update timer
-            var dimlight_<?php echo $id; ?>_timer = setInterval(dimlight_<?php echo $id; ?>_poll,5000);
+            var dimlight_<?php echo $id; ?>_timer = setInterval(dimlight_<?php echo $id; ?>_poll, 2000);
             //console.log("dimlight timer:"+dimlight_<?php echo $id; ?>_timer);
 
 
