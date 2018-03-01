@@ -157,7 +157,7 @@ class DimLightApplet {
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="card mb-3">
                 <div class="card-header" style="background: linear-gradient(#D8D8D8,#BDBDBD);">
-                    Lamp
+                    Dim Light
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Dimmable LED light</h5>

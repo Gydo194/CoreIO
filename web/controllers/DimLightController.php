@@ -42,54 +42,50 @@ class DimLightController {
     }
 
     public function updateDimLight() {
-
+        //error_log("UpdateDimLight() called");
+        if(!Request::hasRequestParameter(DIMLIGHT_REQUEST_ID_VARNAME)) { 
+            error_log("DimLightController::updateDimLight(): missing ID parameter; aborting..");
+            return;
+        }
         self::permissionCheck();
+        $id = Request::getRequestParameter(DIMLIGHT_REQUEST_ID_VARNAME);
+        $value = Request::getRequestParameter(DIMLIGHT_REQUEST_VALUE_VARNAME);
+        $pin = Request::getRequestParameter(DIMLIGHT_REQUEST_PIN_VARNAME);
+        $groupname = Request::getRequestParameter(DIMLIGHT_REQUEST_GROUP_VARNAME);
 
-        if (!isset($_REQUEST[DIMLIGHT_REQUEST_ID_VARNAME])) {
-            error_log("DimLightController::updateDimLight(): missing id param");
+        //echo "id:{$id} val: {$value} pin: {$pin} group: {$groupname}";
+        
+        
+        try {
+            $d = $this->dao->getDimLight($id);
+            
+            if(Request::hasRequestParameter(DIMLIGHT_REQUEST_PIN_VARNAME)) {
+                $d->setPin($pin);
+            }
+            if(Request::hasRequestParameter(DIMLIGHT_REQUEST_GROUP_VARNAME)) {
+                $d->setGroup($groupname);
+            }
+            if(Request::hasRequestParameter(DIMLIGHT_REQUEST_VALUE_VARNAME)) {
+                $d->setValue($value);
+            }
+            
+            
+            $this->dao->updateDimLight($d);
+            //error_log("GROUPNAME:".$d->getGroup());
+            //error_log("VALUE:"+$d->getValue());
+            ServerCommunication::send($d->getGroup(), self::generateArduinoAWSendCommand($d->getPin(), $d->getValue()));
+            echo "{\"success\":true}";
+        } catch (InaccessibleDataException $e) {
+            error_log("inacc data exception");
             echo "{\"success\":false}";
-            return;
-        }
-
-        $id = $_REQUEST[DIMLIGHT_REQUEST_ID_VARNAME];
-
-        $d = $this->dao->getDimLight($id);
-
-        if (null === $d) {
-            error_log("DimLightController::updateDimLight(): cannot get dimlight object from dao, is id correct?");
+        } catch (ServerCommunicationException $s) {
+            error_log("Servercomm exception");
             echo "{\"success\":false}";
-            return;
         }
-
-
-        if (isset($_REQUEST[DIMLIGHT_REQUEST_VALUE_VARNAME])) {
-            //update the value
-            $value = intval($_REQUEST[DIMLIGHT_REQUEST_VALUE_VARNAME]);
-            $d->setValue($value);
-        }
-
-        if (isset($_REQUEST[DIMLIGHT_REQUEST_PIN_VARNAME])) {
-            $pin = intval($_REQUEST[DIMLIGHT_REQUEST_PIN_VARNAME]);
-            $d->setPin($pin);
-        }
-
-        if (isset($_REQUEST[DIMLIGHT_REQUEST_GROUP_VARNAME])) {
-            $groupname = strval($_REQUEST[DIMLIGHT_REQUEST_GROUP_VARNAME]);
-            $d->setGroup($groupname);
-        }
-
-
-
-        $this->dao->updateDimLight($d);
-
-        echo "{\"success\":true}";
     }
-    
-    
-    
-    
-     public function getValueById() {
-         $d = null;
+
+    public function getValueById() {
+        $d = null;
         if (!UserController::getPermission(DIMLIGHT_PERMISSION_NAME)) {
             echo "{\"success\":false,\"reason\":\"unauthorised\"}";
             return;
@@ -109,6 +105,9 @@ class DimLightController {
         );
         echo json_encode($arr, true);
     }
-    
+
+    private static function generateArduinoAWSendCommand(int $pin, int $val): string {
+        return "aw(" . $pin . "," . $val . ");";
+    }
 
 }
