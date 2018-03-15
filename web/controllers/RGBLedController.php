@@ -6,6 +6,8 @@
  * @author gydo194
  */
 defined("RGBLED_UPDATE_PERMISSION") || define("RGBLED_UPDATE_PERMISSION", "send");
+defined("RGBLED_ID_PARAM_NAME") || define("RGBLED_ID_PARAM_NAME","rgbled_id");
+defined("RGBLED_VALUE_PARAM_NAME") || define("RGBLED_VALUE_PARAM_NAME","value");
 
 class RGBLedController {
 
@@ -81,7 +83,12 @@ class RGBLedController {
         return true;
     }
 
-    public function updateRedByIdWebWrapper() { //TODO: implement permission; make constant for rgbled_id and value params
+    public function updateRedByIdWebWrapper() {
+        if (!UserController::getPermission(RGBLED_UPDATE_PERMISSION)) {
+            echo "{\"success\":false,\"reason\":\"unauthorised\"}";
+            return; //throwing the access violation exception when not logged in renders the login page
+        }
+        
         $id = intval(Request::getRequestParameter("rgbled_id"));
         $red = intval(Request::getRequestParameter("value"));
 
@@ -100,8 +107,8 @@ class RGBLedController {
             return;
         }
 
-        $id = intval(Request::getRequestParameter("rgbled_id"));
-        $green = intval(Request::getRequestParameter("value"));
+        $id = intval(Request::getRequestParameter(RGBLED_ID_PARAM_NAME));
+        $green = intval(Request::getRequestParameter(RGBLED_VALUE_PARAM_NAME));
 
 
         if (self::updateGreenById($id, $green)) {
@@ -118,8 +125,8 @@ class RGBLedController {
             return;
         }
 
-        $id = intval(Request::getRequestParameter("rgbled_id"));
-        $blue = intval(Request::getRequestParameter("value"));
+        $id = intval(Request::getRequestParameter(RGBLED_ID_PARAM_NAME));
+        $blue = intval(Request::getRequestParameter(RGBLED_VALUE_PARAM_NAME));
 
         if (self::updateBlueById($id, $blue)) {
             echo "{\"success\":true}";
@@ -135,7 +142,7 @@ class RGBLedController {
             return;
         }
 
-        $id = intval(Request::getRequestParameter("rgbled_id"));
+        $id = intval(Request::getRequestParameter(RGBLED_ID_PARAM_NAME));
         try {
             $led = $this->dao->getRgbLed($id);
         } catch (InaccessibleDataException $e) {
