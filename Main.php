@@ -4,6 +4,18 @@
  * CoreIO main
  */
 
+
+
+/*
+ * TODO:
+ * make the login page a redirect, keep checking request creds, but redirect if incorrect instead of throwing the login page html
+ * implement the User DAO completely
+ * get rid of TCPSendAction in favor of a globally usable function (servercommunication)
+ * point to static functions for page rendering instead of building objects for every page/action on page request
+ * 
+ * XML config file for classes and functions (think struts.xml)
+ */
+
 //exceptions
 require_once 'utils/InaccessibleDataException.php';
 require_once 'utils/ServerCommunicationException.php';
