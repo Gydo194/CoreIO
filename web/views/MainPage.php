@@ -121,6 +121,7 @@ class MainPage {
                             <!-- END RGBLED IN MAIN -->
                             <?php DimLightApplet::render(MysqlDimLightDAO::getInstance()->getDimLight(1));    ?>
                             <!-- END DIMLED IN MAIN -->
+			    <?php DimLightApplet::render(MysqlDimLightDAO::getInstance()->getDimLight(2));    ?>
 
                         </div>
 
