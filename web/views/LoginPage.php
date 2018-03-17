@@ -10,7 +10,7 @@
  *
  * @author gydo194
  */
-class LoginPage{
+class LoginPage {
 
     //put your code here
     /*
@@ -46,6 +46,7 @@ class LoginPage{
                     body {
                         height: 100%;
                         background-image: url("web/res/img/login.jpg");
+			background-size: cover;
                     }
 
 
