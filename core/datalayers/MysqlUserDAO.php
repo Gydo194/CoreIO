@@ -15,11 +15,11 @@ class MysqlUserDAO implements IDAOUser {
 
     
     
-    public function createUser(User $user) {
+    public function createUser(IUser $user) {
         
     }
 
-    public function deleteUser(User $user) {
+    public function deleteUser(IUser $user) {
         
     }
 
@@ -145,7 +145,7 @@ class MysqlUserDAO implements IDAOUser {
         
     }
 
-    public function updateUser(User $user) {
+    public function updateUser(IUser $user) {
         
     }
 

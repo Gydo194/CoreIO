@@ -11,9 +11,9 @@
  * @author gydo194
  */
 interface IDAOUser {
-    public function createUser(User $user);
-    public function updateUser(User $user);
-    public function deleteUser(User $user);
+    public function createUser(IUser $user);
+    public function updateUser(IUser $user);
+    public function deleteUser(IUser $user);
     
     public function getUser(int $id);
     public function getUserByName(string $username);
