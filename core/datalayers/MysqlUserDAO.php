@@ -15,11 +15,11 @@ class MysqlUserDAO implements IDAOUser {
 
     
     
-    public function createUser(User $user) {
+    public function createUser(IUser $user) {
         
     }
 
-    public function deleteUser(User $user) {
+    public function deleteUser(IUser $user) {
         
     }
 
@@ -32,7 +32,55 @@ class MysqlUserDAO implements IDAOUser {
     }
 
     public function getUserByToken(string $token) {
+        $stmt = PDOFactory::query("SELECT name,password,token,permissions FROM users where token = ? LIMIT 1;",array($token));
+        $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        //create new user with the results from the database
+        $u = new User();
+        
+        if($stmt->rowCount() < 1) {
+            return $u;
+        }
+       
+        if(array_key_exists("name", $userdata)) {
+            $u->setUserName($userdata["name"]);
+        } else {
+            //missing user data; abort
+            //return new User();
+            echo "USER NAME IS NULL";
+            return null;
+        }
+        
+         if(array_key_exists("password", $userdata)) {
+            $u->setPassword($userdata["password"]);
+        } else {
+            //missing user data; abort
+            //return new User();
+            echo "PASSWORD IS NULL";
+            return null;
+        }
+        
+         if(array_key_exists("token", $userdata)) {
+            $u->setToken($userdata["token"]);
+        } else {
+            //missing user data; abort
+            //return new User();
+            echo "TOKEN IS NULL";
+            return null;
+        }
+        
+         if(array_key_exists("permissions", $userdata)) {
+            $perms = explode(";",$userdata["permissions"]);  
+            $u->setPermissions($perms);
+        } else {
+            //missing user data; abort
+            //return new User();
+            echo "PERMISSIONS IS NULL";
+            return null;
+        }
+        
+        //return that user
+        return $u;
     }
 
     public function getUserByUsernameAndPassword(string $user, string $pass) {
@@ -97,7 +145,7 @@ class MysqlUserDAO implements IDAOUser {
         
     }
 
-    public function updateUser(User $user) {
+    public function updateUser(IUser $user) {
         
     }
 

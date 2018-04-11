@@ -18,6 +18,7 @@ class User implements IUser, Base64Serializeable {
     private $password;
     private $token;
     private $permissions = array();
+    private $userDataId = 0;
 
     public function __construct() {
         
@@ -40,34 +41,18 @@ class User implements IUser, Base64Serializeable {
     }
 
     public function getPermission(string $name) {
-        /*
-        if (array_key_exists($name, $this->permissions)) {
-            return boolval($this->permissions[$name]);
-        } else {
-            return false;
-        }
-         */
-        //return array_key_exists($name, $this->permissions);
-       // return isset($this->permissions[$name]);
         return in_array($name, $this->permissions);
     }
 
     public function getToken(): string {
         return $this->token;
     }
-
-    /*
-      public function setId(int $i) {
-      $this->id = $i;
-      }
-     */
-
-    public function isLoggedIn() {
-        return !empty($this->permissions);
+    
+    public function getId(): int {
+        return $this->id;
     }
 
-    
-
+    //setters
     public function setPassword(string $password) {
         $this->password = $password;
     }
@@ -83,6 +68,16 @@ class User implements IUser, Base64Serializeable {
     public function setUserName(string $username) {
         $this->username = $username;
     }
+    
+    public function setId(int $id) {
+        $this->id = $id;
+    }
+    
+    
+    
+    
+    
+    //serialization
 
     public function serialize(): string {
         $arr = array(
@@ -118,5 +113,13 @@ class User implements IUser, Base64Serializeable {
             $this->permissions = $arr["permissions"];
         }
     }
+    
+    
+    //login
+    
+    public function isLoggedIn() {
+        return !empty($this->permissions);
+    }
+
 
 }

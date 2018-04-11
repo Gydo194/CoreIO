@@ -17,15 +17,15 @@ class TestUserDAO implements IDAOUser {
         
     }
 
-    public function createUser(User $user) {
+    public function createUser(IUser $user) {
         return;
     }
 
-    public function deleteUser(User $user) {
+    public function deleteUser(IUser $user) {
         return;
     }
 
-    public function updateUser(User $user) {
+    public function updateUser(IUser $user) {
         return;
     }
 
