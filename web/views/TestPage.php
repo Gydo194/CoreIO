@@ -22,6 +22,9 @@ class TestPage {
             echo "Debug Access<br>";
             var_dump(UserController::getUser());
             
+            var_dump(MysqlKVS::getInstance()->getKVS("userdata_kvs"));
+            
+            
         } else {
             echo "No debug access";
         }
