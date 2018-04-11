@@ -1,20 +1,6 @@
 <?php
 
-//INCLUDES ONLY FOR UNIT TEST!!!!!!!!
-include_once "../../utils/Base64Serializeable.php";
-include_once "../datalayerinterfaces/IDAOUser.php";
-include_once "../datalayers/MysqlUserDAO.php";
-include_once "../datalayerinterfaces/IDAOUserData.php";
-include_once "../models/interfaces/IUser.php";
-include_once "../models/interfaces/IUserData.php";
-include_once "../models/User.php";
-include_once "../models/UserData.php";
-include_once "../../utils/PDOFactory.php";
-include_once "../../utils/InaccessibleDataException.php";
-
-
-defined("MYSQL_USERDATA_DAO_TABLE_NAME") || define("MYSQL_USERDATA_DAO_TABLE_NAME","userdata");
-
+//nobody ever said this worked
 class MysqlUserDataDAO implements IDAOUserData {
     
     /** @var \MysqlUserDataDAO*/
@@ -30,75 +16,48 @@ class MysqlUserDataDAO implements IDAOUserData {
         }
         return self::$instance;
     }
-    
     //interface implements
     public function createUserData(IUserData $ud) {
-        if(is_null($ud)) return;
-        $stmt = PDOFactory::query("insert into ".MYSQL_USERDATA_DAO_TABLE_NAME." values (?)",array($ud->getId()));
+        if(is_null($ud))
+            return;
+        $stmt = PDOFactory::query("insert into " . 
+                                  MYSQL_USERDATA_DAO_TABLE_NAME . 
+                                  " values (?)", array($ud->getId()));
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        
         if($stmt->rowCount() < 1) {
             throw new InaccessibleDataException();
         }
     }
+
     public function updateUserData(IUserData $ud) {
-        
     }
+
     public function deleteUserData(IUserData $ud) {
-        
     }
-    
     //create by integer ID
     public function createUserDataById(int $id) {
-        
     }
-    
-    //get
+    //get UD
     public function getUserData(int $id) {
-        $stmt = PDOFactory::query("SELECT id FROM ".MYSQL_USERDATA_DAO_TABLE_NAME." WHERE id = ?",array($id));
+        $stmt = PDOFactory::query("SELECT id FROM " . 
+                                  MYSQL_USERDATA_DAO_TABLE_NAME . 
+                                  " WHERE id = ?", array($id));
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($stmt->rowCount() < 1) {
+        if($stmt->rowCount()< 1) {
             //got no database results
             throw new InaccessibleDataException();
         }
-        
         $ud = new UserData();
-        
         //if  the keys exist, push them into object, if not throw exception
-        if(array_key_exists("id",$res)) {
+        if(array_key_exists("id", $res)) {
             $ud->setId($res["id"]);
+        } else {
+            //didn't get ID
+            throw new InaccessibleDataException();
         }
-        
+        //base object finished
+        //now for the KVS (Key-Value Service)
+        $this->getKVS($id, $ud);
         return $ud;
     }
-    
-    
 }
-
-//unit test
-$u = new UserData();
-$u->setId(2);
-$u->setValue("key0","value0");
-$u->setValue("key1","value1");
-$u->setValue("key2","value2");
-
-echo "creating<br>";
-//MysqlUserDataDAO::getInstance()->createUserData($u);
-try{
-$userdataget = MysqlUserDataDAO::getInstance()->getUserData(1);
-}catch(InaccessibleDataException $e){
-    echo "IDE";
-    exit();
-}
-
-var_dump($userdataget);
-
-echo "<br>user data id =" . $userdataget->getId();
-
-echo "get done<br>";
-
-MysqlUserDataDAO::getInstance()->createUserData($u);
-
-
-echo "create done<br>";

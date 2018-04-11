@@ -73,6 +73,14 @@ require_once 'web/controllers/DimLightController.php';
 require_once 'web/applets/RgbledApplet.php';
 require_once 'web/applets/DimLightApplet.php';
 
+//KVS and User Data
+require_once "core/models/interfaces/IStringKVS.php";
+require_once "core/models/KVS.php";
+require_once "core/datalayerinterfaces/IDAOKVS.php";
+require_once "core/datalayers/MysqlKVSDAO.php";
+
+require_once "core/datalayerinterfaces/IDAOUserData.php";
+require_once "core/datalayers/MysqlUserDataDAO.php";
 
 
 
