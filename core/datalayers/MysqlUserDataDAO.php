@@ -34,19 +34,12 @@ class MysqlUserDataDAO implements IDAOUserData {
     //interface implements
     public function createUserData(IUserData $ud) {
         if(is_null($ud)) return;
-        foreach($ud->getData() as $k => $v) {
-            echo "MysqlUserDataDAO::createUserData(): Key: '".$k."', val: '".$v."'!<br>";
-        }
-        
         $stmt = PDOFactory::query("insert into ".MYSQL_USERDATA_DAO_TABLE_NAME." values (?)",array($ud->getId()));
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if($stmt->rowCount() < 1) {
             throw new InaccessibleDataException();
         }
-        
-        
-        
     }
     public function updateUserData(IUserData $ud) {
         
@@ -67,15 +60,12 @@ class MysqlUserDataDAO implements IDAOUserData {
         
         if($stmt->rowCount() < 1) {
             //got no database results
-            echo "NO DATABASE ROWS RETURNED<br>";
             throw new InaccessibleDataException();
         }
         
-        foreach($res as $k => $v) {
-            echo "MysqlUserDataDAO::getUserData(): database result: Key: '".$k."', val: '".$v."'!<br>";
-        }
-        
         $ud = new UserData();
+        
+        //if  the keys exist, push them into object, if not throw exception
         if(array_key_exists("id",$res)) {
             $ud->setId($res["id"]);
         }
@@ -88,7 +78,7 @@ class MysqlUserDataDAO implements IDAOUserData {
 
 //unit test
 $u = new UserData();
-$u->setId(1);
+$u->setId(2);
 $u->setValue("key0","value0");
 $u->setValue("key1","value1");
 $u->setValue("key2","value2");
@@ -105,4 +95,10 @@ $userdataget = MysqlUserDataDAO::getInstance()->getUserData(1);
 var_dump($userdataget);
 
 echo "<br>user data id =" . $userdataget->getId();
+
+echo "get done<br>";
+
+MysqlUserDataDAO::getInstance()->createUserData($u);
+
+
 echo "create done<br>";
