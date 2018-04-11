@@ -10,6 +10,6 @@ interface IDAOUserData {
     public function createUserDataById(int $id);
     
     //get
-    public function getUserDate(int $id);
+    public function getUserData(int $id);
     
 }

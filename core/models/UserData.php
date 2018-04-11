@@ -23,4 +23,13 @@ class UserData implements IUserData {
     public function getValue(string $value) {
         return $this->data[$key];
     }
+    
+    
+    public function getData(): array {
+        return $this->data;
+    }
+    
+    public function setData(array $data) {
+        $this->data = $data;
+    }
 }
