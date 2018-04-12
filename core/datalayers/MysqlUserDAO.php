@@ -7,6 +7,18 @@
  */
 
 class MysqlUserDAO implements IDAOUser {
+    
+    private static $instance = null;
+    
+    public static function getInstance(): MysqlUserDAO {
+        if(is_null(self::$instance)) {
+            self::$instance = new MysqlUserDAO();
+        }
+        return self::$instance;
+    }
+    
+    
+    
     //put your code here
     private $db = null;
     public function __construct() {
