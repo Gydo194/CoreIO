@@ -3,6 +3,7 @@
 class UserData implements IUserData {
     private $id = 0;
     private $data = array();
+    private $kvsname = "";
 
     public function getId(): int {
         return $this->id;
@@ -12,24 +13,11 @@ class UserData implements IUserData {
         $this->id = $id;
     }
 
-    public function setValue(string $key, string $value) {
-        $this->data[$key] = $value;
-    }
-
-    public function hasValue(string $key) {
-        return array_key_exists($this->data, $key);
-    }
-
-    public function getValue(string $value) {
-        return $this->data[$key];
+    public function getKVSName(): string {
+        return $this->kvsname;
     }
     
-    
-    public function getData(): array {
-        return $this->data;
-    }
-    
-    public function setData(array $data) {
-        $this->data = $data;
+    public function setKVSName(string $kvsname) {   
+        $this->kvsname = $kvsname;
     }
 }

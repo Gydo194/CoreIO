@@ -22,10 +22,13 @@ class TestPage {
             echo "Debug Access<br>";
             var_dump(UserController::getUser());
             
-            echo "<br><br>KVSNAME DUMP<br><br>";
-            
-            var_dump(MysqlKVS::getInstance()->getKVS("userdata_kvs"));
-            
+            //var_dump(MysqlKVS::getInstance()->getKVS("userdata_kvs"));
+            $userdataid = UserController::getUser()->getUserDataId();
+            echo "<br><br> Userdata ID = '{$userdataid}' <br><br>";
+            $userdata = MysqlUserDataDAO::getInstance()->getUserData($userdataid);
+            $kvsname = $userdata->getKVSName();
+            echo "KVSNAME = '{$kvsname}'<br>";
+            var_dump(MysqlKVS::getInstance()->getKVS($kvsname));
             
             echo "<br><br>SESSION DUMP<br><br>";
             

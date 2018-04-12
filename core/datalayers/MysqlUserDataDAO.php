@@ -1,5 +1,7 @@
 <?php
 
+defined("MYSQL_USERDATA_DAO_TABLE_NAME") || define("MYSQL_USERDATA_DAO_TABLE_NAME", "userdata");
+
 //nobody ever said this worked
 class MysqlUserDataDAO implements IDAOUserData {
     
@@ -39,7 +41,7 @@ class MysqlUserDataDAO implements IDAOUserData {
     }
     //get UD
     public function getUserData(int $id) {
-        $stmt = PDOFactory::query("SELECT id FROM " . 
+        $stmt = PDOFactory::query("SELECT id, kvsname FROM " . 
                                   MYSQL_USERDATA_DAO_TABLE_NAME . 
                                   " WHERE id = ?", array($id));
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -55,9 +57,14 @@ class MysqlUserDataDAO implements IDAOUserData {
             //didn't get ID
             throw new InaccessibleDataException();
         }
-        //base object finished
-        //now for the KVS (Key-Value Service)
-        $this->getKVS($id, $ud);
+        
+        
+         if(array_key_exists("kvsname", $res)) {
+            $ud->setKVSName($res["kvsname"]);
+        } else {
+            //didn't get ID
+            throw new InaccessibleDataException();
+        }
         return $ud;
     }
 }
