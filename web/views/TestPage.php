@@ -18,7 +18,7 @@ class TestPage {
         echo "TestPage invoked!<br>";
        // echo "constant: ".LOGIN_BASE_PERMISSION_NAME."<br>";
         echo UserController::isLoggedIn() ? "Logged in" : "not logged in";
-        if(UserController::getPermission("debug")) {
+        if(UserController::getPermission("main")) {
             echo "Debug Access<br>";
             var_dump(UserController::getUser());
             
