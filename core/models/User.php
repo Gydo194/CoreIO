@@ -13,12 +13,12 @@
  */
 class User implements IUser, Base64Serializeable {
 
-//    private $id;
+
     private $username;
     private $password;
-    private $token;
-    private $permissions = array();
-    private $userDataId = 0;
+    private $token; //user login token
+    private $permissions = array(); //user permissions
+    private $userDataId = 0; //userData ID
 
     public function __construct() {
         
@@ -48,9 +48,11 @@ class User implements IUser, Base64Serializeable {
         return $this->token;
     }
     
-    public function getId(): int {
-        return $this->id;
+    public function getUserDataId(): int {
+        return $this->userDataId;
     }
+    
+ 
 
     //setters
     public function setPassword(string $password) {
@@ -69,9 +71,11 @@ class User implements IUser, Base64Serializeable {
         $this->username = $username;
     }
     
-    public function setId(int $id) {
-        $this->id = $id;
+    public function setUserDataId(int $id) {
+        $this->userDataId = $id;
     }
+    
+    
     
     
     
@@ -84,7 +88,8 @@ class User implements IUser, Base64Serializeable {
             "username" => $this->username,
             "password" => $this->password,
             "token" => $this->token,
-            "permissions" => $this->permissions
+            "permissions" => $this->permissions,
+            "userdata_id" => $this->userDataId
         );
         $json = json_encode($arr, true);
         $b64 = base64_encode($json);
@@ -111,6 +116,10 @@ class User implements IUser, Base64Serializeable {
 
         if (array_key_exists("permissions", $arr)) {
             $this->permissions = $arr["permissions"];
+        }
+        
+        if (array_key_exists("userdata_id", $arr)) {
+            $this->userDataId = $arr["userdata_id"];
         }
     }
     

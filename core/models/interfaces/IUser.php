@@ -14,5 +14,8 @@ interface IUser {
     public function setToken(string $token);
     public function setPermission(string $perm, bool $state);
     
+    //native userdata
+    public function getUserDataId(): int;
+    public function setUserDataId(int $id);
     
 }
